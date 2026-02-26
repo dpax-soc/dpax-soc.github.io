@@ -4,14 +4,8 @@
     const STORAGE_KEY = "dpax-language";
     const URL_LANGUAGE_PARAM = "lang";
     const TRANSLATIONS_PATH = "assets/i18n/translations.json";
+    const LINKEDIN_POSTS_PATH = "assets/data/linkedin-posts.json";
     const LINKEDIN_POSTS_LIMIT = 20;
-    const LINKEDIN_FETCH_TIMEOUT_MS = 12000;
-    const LINKEDIN_SOURCE_URL = "https://www.linkedin.com/company/dpax/posts/?feedView=all";
-    const LINKEDIN_SOURCE_HOST_PATH = LINKEDIN_SOURCE_URL.replace(/^https?:\/\//, "");
-    const LINKEDIN_FETCH_URLS = [
-        `https://r.jina.ai/http://${LINKEDIN_SOURCE_HOST_PATH}`,
-        "https://r.jina.ai/http://www.linkedin.com/company/dpax/recent-activity/all/"
-    ];
     const BRAND_MEANINGS = [
         { en: "Digital Protection vs X-Threat", fr: "Protection Numérique face aux Menaces X" }
     ];
@@ -326,7 +320,7 @@
 
         const emptyMessage = resolveText(emptyLabelElement, "No original LinkedIn posts are available at the moment.");
         const errorMessage = resolveText(errorLabelElement, "Unable to load LinkedIn posts right now.");
-        const protocolMessage = "Open this page through https:// to load LinkedIn posts dynamically.";
+        const protocolMessage = "Open this page through a local web server (http:// or https://) to load LinkedIn posts.";
         const linkLabel = resolveText(linkLabelElement, "View on LinkedIn");
 
         const setStatus = (message, { hidden = false, isError = false } = {}) => {
@@ -345,114 +339,16 @@
             }
         };
 
-        const sanitizePostUrl = (rawUrl) => {
-            if (typeof rawUrl !== "string") {
-                return "";
+        const isValidPost = (post) => {
+            if (!post || typeof post !== "object") {
+                return false;
             }
 
-            const trimmedUrl = rawUrl.trim().replace(/[),.;]+$/, "");
-            if (!trimmedUrl) {
-                return "";
+            if (post.isRepost === true) {
+                return false;
             }
 
-            try {
-                const parsedUrl = new URL(trimmedUrl);
-                parsedUrl.search = "";
-                parsedUrl.hash = "";
-                return parsedUrl.toString().replace(/\/$/, "");
-            } catch (error) {
-                return "";
-            }
-        };
-
-        const deriveTitleFromUrl = (postUrl) => {
-            try {
-                const path = new URL(postUrl).pathname;
-                const encodedSlug = path.split("/posts/")[1] || "";
-                const slug = decodeURIComponent(encodedSlug);
-                const titleSeed = slug.split("-activity-")[0].replace(/^dpax_/, "").replace(/[_-]+/g, " ").trim();
-
-                if (!titleSeed) {
-                    return "LinkedIn Post";
-                }
-
-                return `${titleSeed.charAt(0).toUpperCase()}${titleSeed.slice(1)}`;
-            } catch (error) {
-                return "LinkedIn Post";
-            }
-        };
-
-        const normalizePostTitle = (rawTitle, postUrl) => {
-            if (typeof rawTitle !== "string") {
-                return deriveTitleFromUrl(postUrl);
-            }
-
-            const normalizedTitle = rawTitle.replace(/\s+/g, " ").trim();
-            if (!normalizedTitle || /^https?:\/\//i.test(normalizedTitle)) {
-                return deriveTitleFromUrl(postUrl);
-            }
-
-            return normalizedTitle;
-        };
-
-        const parsePostsFromContent = (content) => {
-            if (typeof content !== "string" || !content.trim()) {
-                return [];
-            }
-
-            const posts = [];
-            const seenUrls = new Set();
-
-            const addPost = (urlCandidate, titleCandidate) => {
-                if (posts.length >= LINKEDIN_POSTS_LIMIT) {
-                    return;
-                }
-
-                const cleanUrl = sanitizePostUrl(urlCandidate);
-                if (!cleanUrl || seenUrls.has(cleanUrl)) {
-                    return;
-                }
-
-                seenUrls.add(cleanUrl);
-                posts.push({
-                    url: cleanUrl,
-                    title: normalizePostTitle(titleCandidate, cleanUrl),
-                    excerpt: "",
-                    relativeDate: ""
-                });
-            };
-
-            const markdownLinkRegex = /\[([^\]\n]{3,220})\]\((https:\/\/www\.linkedin\.com\/posts\/dpax_[^)\s]+)\)/gi;
-            let markdownMatch = markdownLinkRegex.exec(content);
-            while (markdownMatch) {
-                addPost(markdownMatch[2], markdownMatch[1]);
-                markdownMatch = markdownLinkRegex.exec(content);
-            }
-
-            const rawUrlRegex = /https:\/\/www\.linkedin\.com\/posts\/dpax_[^\s)\]'"<>]+/gi;
-            let urlMatch = rawUrlRegex.exec(content);
-            while (urlMatch) {
-                addPost(urlMatch[0], "");
-                urlMatch = rawUrlRegex.exec(content);
-            }
-
-            return posts;
-        };
-
-        const fetchSourceContent = async (url) => {
-            const controller = new AbortController();
-            const timeoutId = window.setTimeout(() => controller.abort(), LINKEDIN_FETCH_TIMEOUT_MS);
-
-            try {
-                const response = await fetch(url, { cache: "no-store", signal: controller.signal });
-                if (!response.ok) {
-                    throw new Error(`LinkedIn source failed: ${response.status}`);
-                }
-
-                return response.text();
-            } finally {
-                window.clearTimeout(timeoutId);
-            }
+            return typeof post.url === "string" && post.url.trim().length > 0;
         };
 
         const createPostCard = (post) => {
@@ -492,25 +388,14 @@
         };
 
         try {
-            let sourceContent = "";
-            let lastError = null;
-
-            for (const sourceUrl of LINKEDIN_FETCH_URLS) {
-                try {
-                    sourceContent = await fetchSourceContent(sourceUrl);
-                    if (sourceContent && sourceContent.trim()) {
-                        break;
-                    }
-                } catch (error) {
-                    lastError = error;
-                }
+            const response = await fetch(LINKEDIN_POSTS_PATH, { cache: "no-store" });
+            if (!response.ok) {
+                throw new Error(`LinkedIn feed load failed: ${response.status}`);
             }
 
-            if (!sourceContent.trim()) {
-                throw lastError || new Error("No LinkedIn content could be retrieved.");
-            }
-
-            const originalPosts = parsePostsFromContent(sourceContent);
+            const payload = await response.json();
+            const allOriginalPosts = Array.isArray(payload.posts) ? payload.posts.filter(isValidPost) : [];
+            const originalPosts = allOriginalPosts.slice(0, LINKEDIN_POSTS_LIMIT);
 
             postsContainer.innerHTML = "";
             setCount(originalPosts.length);

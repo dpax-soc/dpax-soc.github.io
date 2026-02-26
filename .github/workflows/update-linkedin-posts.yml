@@ -1,0 +1,37 @@
+name: Update LinkedIn Posts
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 */6 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  refresh-linkedin-feed:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Refresh LinkedIn feed
+        run: node scripts/update-linkedin-posts.mjs
+
+      - name: Commit and push if feed changed
+        run: |
+          if git diff --quiet -- assets/data/linkedin-posts.json; then
+            echo "No feed change detected"
+            exit 0
+          fi
+
+          git config user.name "DPaX Bot"
+          git config user.email "support@dpax.fr"
+          git add assets/data/linkedin-posts.json
+          git commit -m "chore(data): refresh LinkedIn posts feed"
+          git push

@@ -1,0 +1,30 @@
+{
+  "source": "https://www.linkedin.com/company/dpax/",
+  "lastSyncedAt": "2026-02-25T08:39:00Z",
+  "posts": [
+    {
+      "id": "7432340762014490624",
+      "isRepost": false,
+      "url": "https://www.linkedin.com/posts/dpax_cisa-confirms-active-exploitation-of-filezen-activity-7432340762014490624-zJtI",
+      "title": "CISA Confirms Active Exploitation of FileZen CVE-2026-25108 Vulnerability",
+      "excerpt": "Une vulnerabilite critique activement exploitee met en peril les systemes de transfert de fichiers. La CISA a ajoute la CVE-2026-25108 a son catalogue KEV.",
+      "relativeDate": "1d"
+    },
+    {
+      "id": "7431734611623206912",
+      "isRepost": false,
+      "url": "https://www.linkedin.com/posts/dpax_weekly-recap-double-tap-skimmers-promptspy-activity-7431734611623206912-AEkX",
+      "title": "Weekly Recap: Double-Tap Skimmers, PromptSpy AI, 30Tbps DDoS, Docker Malware & More",
+      "excerpt": "Le paysage actuel de la cybersecurite exige des strategies proactives face aux menaces emergentes. Cette publication partage une selection de ressources utiles.",
+      "relativeDate": "1d"
+    },
+    {
+      "id": "7431690250193858561",
+      "isRepost": false,
+      "url": "https://www.linkedin.com/posts/dpax_cybers%C3%A9curit%C3%A9-mssp-pentest-activity-7431690250193858561-3_a6",
+      "title": "Lancement officiel de DPaX : la cybersecurite de pointe au service des PME",
+      "excerpt": "Annonce du lancement officiel de DPaX avec une approche combinant MSSP, SOC et pentest pour les petites et moyennes entreprises.",
+      "relativeDate": "1d"
+    }
+  ]
+}
