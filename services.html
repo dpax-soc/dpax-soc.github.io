@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="description"
+        content="DPaX service catalog: managed SOC services and pentest engagements for SMEs."
+        data-i18n-content="services.meta.description"
+    >
+    <title data-i18n="services.meta.title">DPaX Services | SOC and Pentest Offers</title>
+    <link rel="icon" type="image/svg+xml" href="assets/images/brand-favicon.svg">
+    <link rel="icon" type="image/png" sizes="64x64" href="assets/images/brand-favicon-64.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body data-page="services">
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="index.html" class="brand">
+                <span class="brand-logo-wrap">
+                    <img class="brand-logo" src="assets/images/brand-logo-dpax.png" alt="DPaX logo">
+                </span>
+                <span class="brand-meaning" data-dpax-meaning>Digital Protection &amp; XDR</span>
+            </a>
+
+            <nav class="site-nav" data-nav>
+                <button
+                    class="menu-toggle"
+                    data-nav-toggle
+                    aria-label="Open navigation"
+                    data-i18n-aria-label="common.nav.toggle"
+                    aria-expanded="false"
+                >&#9776;</button>
+                <div class="nav-links">
+                    <a href="index.html" data-page-link="home" data-i18n="common.nav.home">Home</a>
+                    <a href="services.html" data-page-link="services" data-i18n="common.nav.services">Services</a>
+                    <a href="blog.html" data-page-link="blog" data-i18n="common.nav.blog">Blog</a>
+                    <a href="contact.html" data-page-link="contact" data-i18n="common.nav.contact">Contact</a>
+                </div>
+            </nav>
+
+            <div
+                class="language-switcher"
+                role="group"
+                aria-label="Language switcher"
+                data-i18n-aria-label="common.languageSwitcher"
+                data-language-switcher
+            >
+                <button type="button" class="language-option" data-language-option="en" data-i18n="common.language.en" aria-pressed="false">EN</button>
+                <button type="button" class="language-option" data-language-option="fr" data-i18n="common.language.fr" aria-pressed="false">FR</button>
+            </div>
+
+            <a class="button button-primary header-cta" href="contact.html#contact-options" data-i18n="common.cta.contact">Contact</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container hero-grid">
+                <article class="hero-content" data-reveal>
+                    <span class="eyebrow" data-i18n="services.hero.eyebrow">Service Catalog</span>
+                    <h1 data-i18n="services.hero.title">Clear Separation Between SOC Operations and Pentest Engagements.</h1>
+                    <p class="lead" data-i18n="services.hero.lead">
+                        Use SOC services when you need continuous operational defense.
+                        Use pentest services when you need controlled offensive validation of your attack surface.
+                        You can run either one alone or combine both for complete coverage.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="button button-primary" href="#soc-services" data-i18n="services.hero.primaryCta">See SOC Services</a>
+                        <a class="button button-ghost" href="#pentest-services" data-i18n="services.hero.secondaryCta">See Pentest Services</a>
+                    </div>
+                    <div class="stat-list">
+                        <div class="stat">
+                            <strong data-i18n="services.hero.stat1.value">SOC</strong>
+                            <span data-i18n="services.hero.stat1.label">Detection + response</span>
+                        </div>
+                        <div class="stat">
+                            <strong data-i18n="services.hero.stat2.value">Pentest</strong>
+                            <span data-i18n="services.hero.stat2.label">Controlled offensive testing</span>
+                        </div>
+                        <div class="stat">
+                            <strong data-i18n="services.hero.stat3.value">Reports</strong>
+                            <span data-i18n="services.hero.stat3.label">Business + technical tracks</span>
+                        </div>
+                    </div>
+                </article>
+
+                <aside class="hero-panel" data-reveal>
+                    <article class="panel-card">
+                        <h3 data-i18n="services.hero.panel1.title">When to Choose SOC</h3>
+                        <p data-i18n="services.hero.panel1.text">You need daily monitoring, alert triage, incident investigation, and a response playbook your team can execute.</p>
+                    </article>
+                    <article class="panel-card">
+                        <h3 data-i18n="services.hero.panel2.title">When to Choose Pentest</h3>
+                        <p data-i18n="services.hero.panel2.text">You need proof-based testing of exploitable weaknesses before audits, customer due diligence, or major launches.</p>
+                    </article>
+                    <article class="panel-card">
+                        <h3 data-i18n="services.hero.panel3.title">Combined Program</h3>
+                        <p data-i18n="services.hero.panel3.text">Pentest findings feed SOC detections to improve visibility and close exposure faster across future attacks.</p>
+                    </article>
+                </aside>
+            </div>
+        </section>
+
+        <section class="section" id="soc-services">
+            <div class="container">
+                <div class="section-head" data-reveal>
+                    <div>
+                        <span class="pill" data-i18n="services.soc.pill">SOC Services</span>
+                        <h2 data-i18n="services.soc.title">Managed Security Operations</h2>
+                    </div>
+                    <p data-i18n="services.soc.text">Ongoing operational protection designed for lean teams that need reliable coverage and fast triage support.</p>
+                </div>
+
+                <figure class="section-media section-media-soc" data-reveal>
+                    <img
+                        src="assets/images/services-soc-workflow.jpg"
+                        alt="SOC operational workflow from monitoring to reporting and improvement"
+                        data-i18n-alt="services.soc.imageAlt"
+                        loading="lazy"
+                        decoding="async"
+                    >
+                </figure>
+
+                <div class="card-grid three">
+                    <article class="service-card soc" data-reveal>
+                        <span class="tag soc" data-i18n="services.soc.card1.tag">Detection</span>
+                        <h3 data-i18n="services.soc.card1.title">Managed Detection and Triage</h3>
+                        <p data-i18n="services.soc.card1.text">24/7 signal monitoring with analyst-driven validation to eliminate noise and surface only real threats.</p>
+                        <ul class="bullet-list">
+                            <li data-i18n="services.soc.card1.point1">SIEM/XDR alert qualification</li>
+                            <li data-i18n="services.soc.card1.point2">Use-case tuning and parser improvements</li>
+                            <li data-i18n="services.soc.card1.point3">Escalation rules aligned to impact</li>
+                        </ul>
+                    </article>
+
+                    <article class="service-card soc" data-reveal>
+                        <span class="tag soc" data-i18n="services.soc.card2.tag">Response</span>
+                        <h3 data-i18n="services.soc.card2.title">Incident Response Retainer</h3>
+                        <p data-i18n="services.soc.card2.text">Hands-on support to contain active incidents and coordinate remediation without losing operational control.</p>
+                        <ul class="bullet-list">
+                            <li data-i18n="services.soc.card2.point1">Containment recommendations and decision support</li>
+                            <li data-i18n="services.soc.card2.point2">Root cause analysis and timeline reconstruction</li>
+                            <li data-i18n="services.soc.card2.point3">Post-incident hardening checklist</li>
+                        </ul>
+                    </article>
+
+                    <article class="service-card soc" data-reveal>
+                        <span class="tag soc" data-i18n="services.soc.card3.tag">Improvement</span>
+                        <h3 data-i18n="services.soc.card3.title">Threat Hunting and Hardening</h3>
+                        <p data-i18n="services.soc.card3.text">Targeted hunts and recurring control reviews focused on high-risk paths used by modern attackers.</p>
+                        <ul class="bullet-list">
+                            <li data-i18n="services.soc.card3.point1">Hypothesis-driven hunting sprints</li>
+                            <li data-i18n="services.soc.card3.point2">Detection gap analysis and roadmap</li>
+                            <li data-i18n="services.soc.card3.point3">Priority remediation guidance</li>
+                        </ul>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="pentest-services">
+            <div class="container">
+                <div class="section-head" data-reveal>
+                    <div>
+                        <span class="pill" data-i18n="services.pentest.pill">Pentest Services</span>
+                        <h2 data-i18n="services.pentest.title">Offensive Security Assessments</h2>
+                    </div>
+                    <p data-i18n="services.pentest.text">Manual and tool-assisted testing to verify exploitable weaknesses and provide a practical fix plan.</p>
+                </div>
+
+                <figure class="section-media section-media-pentest" data-reveal>
+                    <img
+                        src="assets/images/services-pentest-workflow.jpg"
+                        alt="Pentest lifecycle from planning and reconnaissance to exploitation and reporting"
+                        data-i18n-alt="services.pentest.imageAlt"
+                        loading="lazy"
+                        decoding="async"
+                    >
+                </figure>
+
+                <div class="card-grid three">
+                    <article class="service-card pentest" data-reveal>
+                        <span class="tag pentest" data-i18n="services.pentest.card1.tag">Web & API</span>
+                        <h3 data-i18n="services.pentest.card1.title">Application Pentest</h3>
+                        <p data-i18n="services.pentest.card1.text">Testing of authentication, authorization, business logic, and OWASP attack vectors in exposed apps and APIs.</p>
+                        <ul class="bullet-list">
+                            <li data-i18n="services.pentest.card1.point1">Authenticated and unauthenticated scenarios</li>
+                            <li data-i18n="services.pentest.card1.point2">Manual verification of exploitability</li>
+                            <li data-i18n="services.pentest.card1.point3">Developer-ready remediation notes</li>
+                        </ul>
+                    </article>
+
+                    <article class="service-card pentest" data-reveal>
+                        <span class="tag pentest" data-i18n="services.pentest.card2.tag">Internal</span>
+                        <h3 data-i18n="services.pentest.card2.title">Internal Network and AD Pentest</h3>
+                        <p data-i18n="services.pentest.card2.text">Assessment of privilege escalation and lateral movement opportunities from realistic attacker footholds.</p>
+                        <ul class="bullet-list">
+                            <li data-i18n="services.pentest.card2.point1">Credential and trust abuse checks</li>
+                            <li data-i18n="services.pentest.card2.point2">AD misconfiguration and path analysis</li>
+                            <li data-i18n="services.pentest.card2.point3">Domain hardening recommendations</li>
+                        </ul>
+                    </article>
+
+                    <article class="service-card pentest" data-reveal>
+                        <span class="tag pentest" data-i18n="services.pentest.card3.tag">External</span>
+                        <h3 data-i18n="services.pentest.card3.title">External Attack Surface Pentest</h3>
+                        <p data-i18n="services.pentest.card3.text">Validation of internet-facing services, VPNs, and exposed assets to reduce first-entry opportunities.</p>
+                        <ul class="bullet-list">
+                            <li data-i18n="services.pentest.card3.point1">Service exposure and misconfiguration review</li>
+                            <li data-i18n="services.pentest.card3.point2">Vulnerability exploitation where authorized</li>
+                            <li data-i18n="services.pentest.card3.point3">Severity-ranked mitigation plan</li>
+                        </ul>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="delivery-model">
+            <div class="container split">
+                <article class="content-card" data-reveal>
+                    <h3 data-i18n="services.delivery.title">Delivery Methodology</h3>
+                    <p data-i18n="services.delivery.text">Each service starts with scope control and ends with measurable outcomes your team can track.</p>
+                    <div class="timeline">
+                        <div class="timeline-step">
+                            <strong data-i18n="services.delivery.step1.title">1. Scoping Workshop</strong>
+                            <p data-i18n="services.delivery.step1.text">Define business-critical assets, constraints, and acceptable test or monitoring boundaries.</p>
+                        </div>
+                        <div class="timeline-step">
+                            <strong data-i18n="services.delivery.step2.title">2. Execution</strong>
+                            <p data-i18n="services.delivery.step2.text">Run SOC operations or pentest activities with regular updates and transparent communication.</p>
+                        </div>
+                        <div class="timeline-step">
+                            <strong data-i18n="services.delivery.step3.title">3. Action Plan</strong>
+                            <p data-i18n="services.delivery.step3.text">Deliver prioritized remediation and detection improvements mapped to business risk.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="content-card content-card-vcenter" data-reveal>
+                    <h3 data-i18n="services.outcomes.title">What You Receive</h3>
+                    <p data-i18n="services.outcomes.text">Reporting is split into leadership and technical views so every stakeholder gets usable guidance.</p>
+                    <ul class="bullet-list">
+                        <li data-i18n="services.outcomes.point1">Executive summary with key risk decisions</li>
+                        <li data-i18n="services.outcomes.point2">Detailed technical findings with evidence</li>
+                        <li data-i18n="services.outcomes.point3">Severity, impact, and remediation priorities</li>
+                        <li data-i18n="services.outcomes.point4">Follow-up consultation to validate fixes</li>
+                    </ul>
+                </article>
+            </div>
+
+            <div class="container" id="engage">
+                <div class="cta-band" data-reveal>
+                    <div>
+                        <h3 data-i18n="services.cta.title">Need a Combined SOC + Pentest Plan?</h3>
+                        <p data-i18n="services.cta.text">We can sequence quick-win pentest validation first, then wire results into SOC monitoring coverage.</p>
+                    </div>
+                    <div class="hero-actions">
+                        <a class="button button-primary" href="contact.html" data-i18n="common.cta.contact">Contact</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <span>&copy; <span data-year></span><span data-i18n="services.footer.copy"> DPaX. SOC and Pentest services for SMEs.</span></span>
+            <div class="footer-links">
+                <a href="index.html" data-i18n="common.nav.home">Home</a>
+                <a href="services.html" data-i18n="common.nav.services">Services</a>
+                <a href="blog.html" data-i18n="common.nav.blog">Blog</a>
+                <a href="contact.html" data-i18n="common.nav.contact">Contact</a>
+                <a class="footer-social-link" href="https://www.linkedin.com/company/dpax/" target="_blank" rel="noopener noreferrer" aria-label="DPaX on LinkedIn">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M4.98 3.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM3 9h4v12H3zm7 0h3.83v1.64h.05C14.41 9.7 15.95 8.7 18.17 8.7c4.58 0 5.43 3.01 5.43 6.92V21h-4v-4.76c0-1.14-.02-2.6-1.58-2.6-1.59 0-1.83 1.24-1.83 2.52V21h-4z" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/i18n/translations.js" defer></script>
+    <script src="assets/js/main.js" defer></script>
+</body>
+</html>
