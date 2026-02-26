@@ -1,0 +1,5 @@
+Contact: mailto:support@dpax.fr
+Expires: 2027-02-36T23:59:59Z
+Preferred-Languages: en, fr
+Canonical: https://www.dpax.fr/.well-known/security.txt
+Policy: https://www.dpax.fr/contact.html
