@@ -98,6 +98,10 @@ img {
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
 }
 
+.brand-logo-wrap picture {
+    display: block;
+}
+
 .brand-logo {
     width: clamp(96px, 11vw, 130px);
     height: auto;

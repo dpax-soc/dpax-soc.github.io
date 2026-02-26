@@ -15,13 +15,24 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="preload" as="image" href="assets/images/brand-logo-dpax-320.webp" type="image/webp">
 </head>
 <body data-page="blog">
     <header class="site-header">
         <div class="container header-inner">
             <a href="index.html" class="brand">
                 <span class="brand-logo-wrap">
-                    <img class="brand-logo" src="assets/images/brand-logo-dpax.png" alt="DPaX logo">
+                    <picture>
+                        <source srcset="assets/images/brand-logo-dpax-320.webp" type="image/webp">
+                        <img
+                            class="brand-logo"
+                            src="assets/images/brand-logo-dpax-320.png"
+                            width="320"
+                            height="125"
+                            alt="DPaX logo"
+                            fetchpriority="high"
+                        >
+                    </picture>
                 </span>
                 <span class="brand-meaning" data-dpax-meaning>Digital Protection &amp; XDR</span>
             </a>
