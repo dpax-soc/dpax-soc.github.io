@@ -34,7 +34,9 @@
     <link rel="icon" type="image/png" sizes="64x64" href="assets/images/brand-favicon-64.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"></noscript>
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="preload" as="image" href="assets/images/brand-logo-dpax-320.webp" type="image/webp">
     <script type="application/ld+json">
@@ -147,15 +149,15 @@
 
                 <aside class="hero-panel" data-reveal>
                     <article class="panel-card">
-                        <h3 data-i18n="contact.hero.panel1.title">Fast First Response</h3>
+                        <h2 data-i18n="contact.hero.panel1.title">Fast First Response</h2>
                         <p data-i18n="contact.hero.panel1.text">We quickly qualify your need and propose the right SOC or pentest entry point for your current risk level.</p>
                     </article>
                     <article class="panel-card">
-                        <h3 data-i18n="contact.hero.panel2.title">Practical Scoping</h3>
+                        <h2 data-i18n="contact.hero.panel2.title">Practical Scoping</h2>
                         <p data-i18n="contact.hero.panel2.text">You get a clear scope discussion focused on assets, constraints, and realistic execution windows.</p>
                     </article>
                     <article class="panel-card">
-                        <h3 data-i18n="contact.hero.panel3.title">SME-Focused Delivery</h3>
+                        <h2 data-i18n="contact.hero.panel3.title">SME-Focused Delivery</h2>
                         <p data-i18n="contact.hero.panel3.text">Engagements are built for small and mid-sized organizations that need strong security without unnecessary complexity.</p>
                     </article>
                 </aside>
@@ -188,13 +190,16 @@
         <section class="section profile-section">
             <div class="container split">
                 <figure class="profile-card" data-reveal>
-                    <img
-                        src="assets/images/contact-profile-workspace.png"
-                        alt="DPaX consultant working from his secure office"
-                        data-i18n-alt="contact.profile.imageAlt"
-                        loading="lazy"
-                        decoding="async"
-                    >
+                    <picture>
+                        <source srcset="assets/images/contact-profile-workspace.webp" type="image/webp">
+                        <img
+                            src="assets/images/contact-profile-workspace.png"
+                            alt="DPaX consultant working from his secure office"
+                            data-i18n-alt="contact.profile.imageAlt"
+                            loading="lazy"
+                            decoding="async"
+                        >
+                    </picture>
                 </figure>
                 <article class="content-card profile-copy" data-reveal>
                     <span class="pill" data-i18n="contact.profile.pill">Your Point of Contact</span>

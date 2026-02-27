@@ -34,7 +34,9 @@
     <link rel="icon" type="image/png" sizes="64x64" href="assets/images/brand-favicon-64.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"></noscript>
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="preload" as="image" href="assets/images/brand-logo-dpax-320.webp" type="image/webp">
     <script type="application/ld+json">
@@ -179,15 +181,15 @@
 
                 <aside class="hero-panel" data-reveal>
                     <article class="panel-card">
-                        <h3 data-i18n="services.hero.panel1.title">When to Choose SOC</h3>
+                        <h2 data-i18n="services.hero.panel1.title">When to Choose SOC</h2>
                         <p data-i18n="services.hero.panel1.text">You need daily monitoring, alert triage, incident investigation, and a response playbook your team can execute.</p>
                     </article>
                     <article class="panel-card">
-                        <h3 data-i18n="services.hero.panel2.title">When to Choose Pentest</h3>
+                        <h2 data-i18n="services.hero.panel2.title">When to Choose Pentest</h2>
                         <p data-i18n="services.hero.panel2.text">You need proof-based testing of exploitable weaknesses before audits, customer due diligence, or major launches.</p>
                     </article>
                     <article class="panel-card">
-                        <h3 data-i18n="services.hero.panel3.title">Combined Program</h3>
+                        <h2 data-i18n="services.hero.panel3.title">Combined Program</h2>
                         <p data-i18n="services.hero.panel3.text">Pentest findings feed SOC detections to improve visibility and close exposure faster across future attacks.</p>
                     </article>
                 </aside>
@@ -205,13 +207,16 @@
                 </div>
 
                 <figure class="section-media section-media-soc" data-reveal>
-                    <img
-                        src="assets/images/services-soc-workflow.jpg"
-                        alt="SOC operational workflow from monitoring to reporting and improvement"
-                        data-i18n-alt="services.soc.imageAlt"
-                        loading="lazy"
-                        decoding="async"
-                    >
+                    <picture>
+                        <source srcset="assets/images/services-soc-workflow.webp" type="image/webp">
+                        <img
+                            src="assets/images/services-soc-workflow.jpg"
+                            alt="SOC operational workflow from monitoring to reporting and improvement"
+                            data-i18n-alt="services.soc.imageAlt"
+                            loading="lazy"
+                            decoding="async"
+                        >
+                    </picture>
                 </figure>
 
                 <div class="card-grid three">
@@ -262,13 +267,16 @@
                 </div>
 
                 <figure class="section-media section-media-pentest" data-reveal>
-                    <img
-                        src="assets/images/services-pentest-workflow.jpg"
-                        alt="Pentest lifecycle from planning and reconnaissance to exploitation and reporting"
-                        data-i18n-alt="services.pentest.imageAlt"
-                        loading="lazy"
-                        decoding="async"
-                    >
+                    <picture>
+                        <source srcset="assets/images/services-pentest-workflow.webp" type="image/webp">
+                        <img
+                            src="assets/images/services-pentest-workflow.jpg"
+                            alt="Pentest lifecycle from planning and reconnaissance to exploitation and reporting"
+                            data-i18n-alt="services.pentest.imageAlt"
+                            loading="lazy"
+                            decoding="async"
+                        >
+                    </picture>
                 </figure>
 
                 <div class="card-grid three">
