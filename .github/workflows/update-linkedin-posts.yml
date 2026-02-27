@@ -3,7 +3,7 @@ name: Update LinkedIn Posts
 on:
   workflow_dispatch:
   schedule:
-    - cron: "1 */3 * * *"
+    - cron: "0 0 */3 * *"
 
 permissions:
   contents: write
@@ -11,6 +11,11 @@ permissions:
 jobs:
   refresh-linkedin-feed:
     runs-on: ubuntu-latest
+    env:
+      MAKE_LINKEDIN_WEBHOOK_URL: ${{ secrets.MAKE_LINKEDIN_WEBHOOK_URL }}
+      MAKE_LINKEDIN_WEBHOOK_METHOD: ${{ secrets.MAKE_LINKEDIN_WEBHOOK_METHOD }}
+      MAKE_LINKEDIN_WEBHOOK_APIKEY: ${{ secrets.MAKE_LINKEDIN_WEBHOOK_APIKEY }}
+      MAKE_LINKEDIN_WEBHOOK_APIKEY_HEADER: ${{ secrets.MAKE_LINKEDIN_WEBHOOK_APIKEY_HEADER }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

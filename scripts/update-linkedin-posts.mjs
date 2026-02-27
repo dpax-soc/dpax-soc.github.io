@@ -5,166 +5,304 @@ const COMPANY_URL = "https://www.linkedin.com/company/dpax/";
 const OUTPUT_PATH = resolve(process.cwd(), "assets/data/linkedin-posts.json");
 const FETCH_TIMEOUT_MS = 20000;
 const POSTS_LIMIT = 20;
-const SOURCE_URLS = [
-    "https://www.linkedin.com/company/dpax/posts/?feedView=all",
-    "https://www.linkedin.com/company/dpax/recent-activity/all/",
-    "https://r.jina.ai/http://www.linkedin.com/company/dpax/posts/?feedView=all",
-    "https://r.jina.ai/http://www.linkedin.com/company/dpax/recent-activity/all/"
-];
 
-const requestHeaders = {
-    "user-agent": "Mozilla/5.0 (compatible; DPaXFeedSync/1.0; +https://www.dpax.fr)",
-    accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
-};
+const textOrEmpty = (value) => (typeof value === "string" ? value.trim() : "");
+const isNonEmptyObject = (value) => Boolean(value && typeof value === "object" && !Array.isArray(value));
 
-const sanitizePostUrl = (rawUrl) => {
-    if (typeof rawUrl !== "string") {
-        return "";
+const maybeParseJson = (value) => {
+    if (typeof value !== "string") {
+        return null;
     }
 
-    const cleaned = rawUrl.trim().replace(/[),.;]+$/, "");
-    if (!cleaned) {
-        return "";
+    const normalized = value.trim();
+    if (!normalized || (!normalized.startsWith("{") && !normalized.startsWith("["))) {
+        return null;
     }
 
     try {
-        const parsed = new URL(cleaned);
-        parsed.search = "";
-        parsed.hash = "";
+        return JSON.parse(normalized);
+    } catch {
+        return null;
+    }
+};
 
-        if (!/\/posts\/dpax_/i.test(parsed.pathname)) {
-            return "";
+const normalizeDateToMs = (value) => {
+    if (typeof value === "number" && Number.isFinite(value)) {
+        return value < 1e12 ? value * 1000 : value;
+    }
+
+    if (typeof value === "string") {
+        const asNumber = Number(value);
+        if (Number.isFinite(asNumber)) {
+            return normalizeDateToMs(asNumber);
         }
 
-        return parsed.toString().replace(/\/$/, "");
-    } catch {
+        const parsed = Date.parse(value);
+        if (Number.isFinite(parsed)) {
+            return parsed;
+        }
+    }
+
+    return 0;
+};
+
+const toRelativeDate = (timestamp) => {
+    if (!timestamp) {
         return "";
     }
+
+    const diffMs = Math.max(0, Date.now() - timestamp);
+    const minutes = Math.floor(diffMs / 60000);
+    if (minutes < 60) {
+        return `${Math.max(1, minutes)}m`;
+    }
+
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) {
+        return `${hours}h`;
+    }
+
+    const days = Math.floor(hours / 24);
+    if (days < 30) {
+        return `${days}d`;
+    }
+
+    const months = Math.floor(days / 30);
+    return `${Math.max(1, months)}mo`;
 };
 
-const deriveTitleFromUrl = (postUrl) => {
-    try {
-        const path = new URL(postUrl).pathname;
-        const encodedSlug = path.split("/posts/")[1] || "";
-        const slug = decodeURIComponent(encodedSlug);
-        const titleSeed = slug
-            .split("-activity-")[0]
-            .replace(/^dpax_/i, "")
-            .replace(/[_-]+/g, " ")
-            .trim();
+const truncate = (value, limit) => {
+    const normalized = String(value || "").replace(/\s+/g, " ").trim();
+    if (normalized.length <= limit) {
+        return normalized;
+    }
 
-        if (!titleSeed) {
-            return "LinkedIn Post";
+    return `${normalized.slice(0, Math.max(0, limit - 3)).trim()}...`;
+};
+
+const extractPostId = (value) => {
+    const match = String(value).match(/urn:li:(?:activity|share|ugcPost):(\d+)/i) || String(value).match(/-activity-(\d+)/i);
+    if (match) {
+        return match[1];
+    }
+
+    return String(value).replace(/[^a-z0-9]+/gi, "").slice(-24) || `post-${Date.now()}`;
+};
+
+const buildPostUrl = (rawUrl, postId) => {
+    const urlCandidate = textOrEmpty(rawUrl);
+    if (urlCandidate) {
+        try {
+            const parsed = new URL(urlCandidate);
+            parsed.search = "";
+            parsed.hash = "";
+            const host = parsed.hostname.replace(/^www\./i, "");
+            if (/linkedin\.com$/i.test(host)) {
+                return parsed.toString().replace(/\/$/, "");
+            }
+        } catch {
+            // Ignore malformed URL.
         }
-
-        return `${titleSeed.charAt(0).toUpperCase()}${titleSeed.slice(1)}`;
-    } catch {
-        return "LinkedIn Post";
     }
+
+    const urn = textOrEmpty(postId);
+    if (/^urn:li:(activity|share|ugcPost):\d+$/i.test(urn)) {
+        return `https://www.linkedin.com/feed/update/${urn}`;
+    }
+
+    return "";
 };
 
-const normalizeTitle = (candidate, postUrl) => {
-    if (typeof candidate !== "string") {
-        return deriveTitleFromUrl(postUrl);
+const getFieldValue = (item, aliases) => {
+    for (const alias of aliases) {
+        if (Object.prototype.hasOwnProperty.call(item, alias) && item[alias] !== undefined && item[alias] !== null) {
+            return item[alias];
+        }
     }
 
-    const normalized = candidate.replace(/\s+/g, " ").trim();
-    if (!normalized || /^https?:\/\//i.test(normalized)) {
-        return deriveTitleFromUrl(postUrl);
+    return "";
+};
+
+const unwrapMakeWebhookValue = (entry) => {
+    if (!isNonEmptyObject(entry)) {
+        return entry;
+    }
+
+    if (!Object.prototype.hasOwnProperty.call(entry, "value")) {
+        return entry;
+    }
+
+    const value = entry.value;
+    if (isNonEmptyObject(value) || Array.isArray(value)) {
+        return value;
+    }
+
+    const parsed = maybeParseJson(value);
+    return parsed === null ? entry : parsed;
+};
+
+const normalizeMakeWebhookCollection = (collection) => {
+    if (!Array.isArray(collection)) {
+        return [];
+    }
+
+    const normalized = [];
+    for (const entry of collection) {
+        const unwrapped = unwrapMakeWebhookValue(entry);
+        if (Array.isArray(unwrapped)) {
+            normalized.push(...unwrapped.filter((item) => isNonEmptyObject(item)));
+        } else if (isNonEmptyObject(unwrapped)) {
+            normalized.push(unwrapped);
+        }
     }
 
     return normalized;
 };
 
-const extractPostId = (postUrl) => {
-    const match = postUrl.match(/-activity-(\d+)/i);
-    if (match) {
-        return match[1];
+const extractMakeWebhookItems = (payload) => {
+    if (Array.isArray(payload)) {
+        return normalizeMakeWebhookCollection(payload);
     }
 
-    return postUrl.replace(/[^a-z0-9]+/gi, "").slice(-24) || `post-${Date.now()}`;
+    if (isNonEmptyObject(payload) && Array.isArray(payload.posts)) {
+        return normalizeMakeWebhookCollection(payload.posts);
+    }
+
+    if (isNonEmptyObject(payload) && Array.isArray(payload.data)) {
+        return normalizeMakeWebhookCollection(payload.data);
+    }
+
+    if (isNonEmptyObject(payload) && Array.isArray(payload.results)) {
+        return normalizeMakeWebhookCollection(payload.results);
+    }
+
+    return [];
 };
 
-const parsePostsFromSource = (content) => {
-    if (typeof content !== "string" || !content.trim()) {
-        return [];
+const normalizeMakeWebhookItem = (item) => {
+    if (!isNonEmptyObject(item)) {
+        return null;
     }
 
-    const posts = [];
-    const seenUrls = new Set();
+    const postId = textOrEmpty(getFieldValue(item, ["postId", "post_id", "postID", "Post ID", "PostId", "id"]));
+    const postText = textOrEmpty(getFieldValue(item, ["postText", "post_text", "post", "Post Text", "text", "commentary", "message"]));
+    const rawUrl = textOrEmpty(getFieldValue(item, ["url", "postUrl", "post_url", "Post URL"]));
+    const publishedAtRaw = getFieldValue(item, ["publishedAt", "published_at", "Published at", "createdAt", "created_at", "Created at", "Last Modified at", "lastModifiedAt"]);
+    const isReshareRaw = getFieldValue(item, ["isReshare", "is_reshare", "Is Reshare", "isRepost", "is_repost"]);
 
-    const addPost = (rawUrl, titleCandidate) => {
-        if (posts.length >= POSTS_LIMIT) {
-            return;
-        }
+    const url = buildPostUrl(rawUrl, postId);
+    if (!url) {
+        return null;
+    }
 
-        const cleanUrl = sanitizePostUrl(rawUrl);
-        if (!cleanUrl || seenUrls.has(cleanUrl)) {
-            return;
-        }
+    const content = isNonEmptyObject(item.content) ? item.content : {};
+    const article = isNonEmptyObject(content.article) ? content.article : {};
+    const titleFromArticle = textOrEmpty(article.title);
+    const firstLine = postText.split("\n").map((line) => line.trim()).find(Boolean) || "";
+    const title = titleFromArticle || firstLine || "LinkedIn Post";
 
-        seenUrls.add(cleanUrl);
-        posts.push({
-            id: extractPostId(cleanUrl),
-            isRepost: false,
-            url: cleanUrl,
-            title: normalizeTitle(titleCandidate, cleanUrl),
-            excerpt: "",
-            relativeDate: ""
-        });
+    const excerpt = postText || textOrEmpty(article.description) || "";
+    const publishedAtMs = normalizeDateToMs(publishedAtRaw);
+    const isRepost = typeof isReshareRaw === "boolean"
+        ? isReshareRaw
+        : ["true", "1", "yes"].includes(String(isReshareRaw).toLowerCase());
+
+    return {
+        id: extractPostId(postId || url),
+        isRepost,
+        url,
+        title,
+        excerpt: truncate(excerpt, 260),
+        relativeDate: toRelativeDate(publishedAtMs)
     };
-
-    const markdownLinkRegex = /\[([^\]\n]{3,220})\]\((https:\/\/www\.linkedin\.com\/posts\/dpax_[^)\s]+)\)/gi;
-    let markdownMatch = markdownLinkRegex.exec(content);
-    while (markdownMatch) {
-        addPost(markdownMatch[2], markdownMatch[1]);
-        markdownMatch = markdownLinkRegex.exec(content);
-    }
-
-    const rawUrlRegex = /https:\/\/www\.linkedin\.com\/posts\/dpax_[^\s)\]'"<>]+/gi;
-    let urlMatch = rawUrlRegex.exec(content);
-    while (urlMatch) {
-        addPost(urlMatch[0], "");
-        urlMatch = rawUrlRegex.exec(content);
-    }
-
-    return posts;
 };
 
-const fetchWithTimeout = async (url) => {
+const fetchWithTimeout = async (url, options = {}) => {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
 
     try {
-        const response = await fetch(url, {
-            headers: requestHeaders,
-            redirect: "follow",
+        return await fetch(url, {
+            ...options,
+            redirect: options.redirect || "follow",
             signal: controller.signal
         });
-
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
-        }
-
-        const content = await response.text();
-        if (/"code"\s*:\s*451/.test(content) || /unavailable_for_legal_reasons/i.test(content)) {
-            throw new Error("Source returned legal restriction (451)");
-        }
-
-        return content;
     } finally {
         clearTimeout(timeoutId);
     }
 };
 
+const fetchPostsFromMakeWebhook = async () => {
+    const webhookUrl = textOrEmpty(process.env.MAKE_LINKEDIN_WEBHOOK_URL);
+    if (!webhookUrl) {
+        throw new Error("MAKE_LINKEDIN_WEBHOOK_URL is not set.");
+    }
+
+    const webhookMethod = textOrEmpty(process.env.MAKE_LINKEDIN_WEBHOOK_METHOD).toUpperCase() || "GET";
+    const webhookApiKey = textOrEmpty(process.env.MAKE_LINKEDIN_WEBHOOK_APIKEY);
+    const webhookApiKeyHeader = textOrEmpty(process.env.MAKE_LINKEDIN_WEBHOOK_APIKEY_HEADER) || "x-make-apikey";
+
+    const headers = {
+        accept: "application/json"
+    };
+
+    let body;
+    if (webhookMethod !== "GET") {
+        headers["content-type"] = "application/json";
+        body = JSON.stringify({ limit: POSTS_LIMIT });
+    }
+
+    if (webhookApiKey) {
+        headers[webhookApiKeyHeader] = webhookApiKey;
+    }
+
+    const response = await fetchWithTimeout(webhookUrl, {
+        method: webhookMethod,
+        headers,
+        body
+    });
+
+    const rawBody = await response.text();
+    if (!response.ok) {
+        throw new Error(`Make webhook returned HTTP ${response.status}.`);
+    }
+
+    let payload;
+    try {
+        payload = JSON.parse(rawBody);
+    } catch {
+        throw new Error("Make webhook did not return valid JSON.");
+    }
+
+    const rawItems = extractMakeWebhookItems(payload);
+    const seenUrls = new Set();
+    const posts = [];
+
+    for (const item of rawItems) {
+        const normalized = normalizeMakeWebhookItem(item);
+        if (!normalized || seenUrls.has(normalized.url)) {
+            continue;
+        }
+
+        seenUrls.add(normalized.url);
+        posts.push(normalized);
+
+        if (posts.length >= POSTS_LIMIT) {
+            break;
+        }
+    }
+
+    return posts;
+};
+
 const readExistingFeed = async () => {
     try {
         const existing = JSON.parse(await readFile(OUTPUT_PATH, "utf8"));
-        if (existing && typeof existing === "object" && Array.isArray(existing.posts)) {
+        if (isNonEmptyObject(existing) && Array.isArray(existing.posts)) {
             return existing;
         }
     } catch {
-        // Ignore missing/invalid file.
+        // Ignore missing or invalid file.
     }
 
     return null;
@@ -172,33 +310,25 @@ const readExistingFeed = async () => {
 
 const main = async () => {
     let posts = [];
-    const errors = [];
+    let fetchError = "";
 
-    for (const sourceUrl of SOURCE_URLS) {
-        try {
-            const content = await fetchWithTimeout(sourceUrl);
-            const parsedPosts = parsePostsFromSource(content);
-
-            if (parsedPosts.length > 0) {
-                posts = parsedPosts;
-                break;
-            }
-
-            errors.push(`${sourceUrl} -> no post URLs found`);
-        } catch (error) {
-            errors.push(`${sourceUrl} -> ${error.message}`);
-        }
+    try {
+        posts = await fetchPostsFromMakeWebhook();
+    } catch (error) {
+        fetchError = error.message || String(error);
     }
 
     if (!posts.length) {
         const existingFeed = await readExistingFeed();
         if (existingFeed && existingFeed.posts.length > 0) {
-            console.warn("LinkedIn sync failed, keeping existing feed file unchanged.");
-            console.warn(errors.join("\n"));
+            console.warn("Make sync failed, keeping existing feed file unchanged.");
+            if (fetchError) {
+                console.warn(fetchError);
+            }
             return;
         }
 
-        throw new Error(`LinkedIn sync failed and no existing feed is available.\n${errors.join("\n")}`);
+        throw new Error(`Make sync failed and no existing feed is available.${fetchError ? `\n${fetchError}` : ""}`);
     }
 
     const payload = {
@@ -210,7 +340,7 @@ const main = async () => {
     await mkdir(dirname(OUTPUT_PATH), { recursive: true });
     await writeFile(OUTPUT_PATH, `${JSON.stringify(payload, null, 2)}\n`, "utf8");
 
-    console.log(`LinkedIn feed updated with ${payload.posts.length} posts.`);
+    console.log(`LinkedIn feed updated with ${payload.posts.length} posts from Make webhook.`);
 };
 
 main().catch((error) => {
