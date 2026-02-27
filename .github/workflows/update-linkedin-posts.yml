@@ -25,6 +25,24 @@ jobs:
         with:
           node-version: "20"
 
+      - name: Validate Make webhook configuration
+        run: |
+          set -euo pipefail
+
+          if [ -z "${MAKE_LINKEDIN_WEBHOOK_URL:-}" ]; then
+            echo "::error::Missing required secret: MAKE_LINKEDIN_WEBHOOK_URL"
+            exit 1
+          fi
+
+          if [ -z "${MAKE_LINKEDIN_WEBHOOK_APIKEY:-}" ]; then
+            echo "::error::Missing required secret: MAKE_LINKEDIN_WEBHOOK_APIKEY"
+            exit 1
+          fi
+
+          node -e "const u=new URL(process.env.MAKE_LINKEDIN_WEBHOOK_URL); console.log(`Make webhook host: ${u.host}`)"
+          echo "Make webhook method: ${MAKE_LINKEDIN_WEBHOOK_METHOD:-GET}"
+          echo "Make API key header: ${MAKE_LINKEDIN_WEBHOOK_APIKEY_HEADER:-x-make-apikey}"
+
       - name: Refresh LinkedIn feed
         run: node scripts/update-linkedin-posts.mjs
 

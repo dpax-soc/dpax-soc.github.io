@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 
 const COMPANY_URL = "https://www.linkedin.com/company/dpax/";
@@ -256,6 +256,7 @@ const fetchPostsFromMakeWebhook = async () => {
         headers[webhookApiKeyHeader] = webhookApiKey;
     }
 
+    console.log(`Calling Make webhook with ${webhookMethod} request.`);
     const response = await fetchWithTimeout(webhookUrl, {
         method: webhookMethod,
         headers,
@@ -292,43 +293,15 @@ const fetchPostsFromMakeWebhook = async () => {
         }
     }
 
+    console.log(`Make webhook returned ${rawItems.length} item(s), normalized ${posts.length} LinkedIn post(s).`);
     return posts;
 };
 
-const readExistingFeed = async () => {
-    try {
-        const existing = JSON.parse(await readFile(OUTPUT_PATH, "utf8"));
-        if (isNonEmptyObject(existing) && Array.isArray(existing.posts)) {
-            return existing;
-        }
-    } catch {
-        // Ignore missing or invalid file.
-    }
-
-    return null;
-};
-
 const main = async () => {
-    let posts = [];
-    let fetchError = "";
-
-    try {
-        posts = await fetchPostsFromMakeWebhook();
-    } catch (error) {
-        fetchError = error.message || String(error);
-    }
+    const posts = await fetchPostsFromMakeWebhook();
 
     if (!posts.length) {
-        const existingFeed = await readExistingFeed();
-        if (existingFeed && existingFeed.posts.length > 0) {
-            console.warn("Make sync failed, keeping existing feed file unchanged.");
-            if (fetchError) {
-                console.warn(fetchError);
-            }
-            return;
-        }
-
-        throw new Error(`Make sync failed and no existing feed is available.${fetchError ? `\n${fetchError}` : ""}`);
+        throw new Error("Make webhook returned zero valid posts. Feed file was not updated.");
     }
 
     const payload = {
