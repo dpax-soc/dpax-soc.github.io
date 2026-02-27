@@ -244,7 +244,7 @@
     const initLocalization = async () => {
         bindLanguageSwitcher();
         const initialLanguage = resolveInitialLanguage();
-        applyLanguage(initialLanguage, { persist: false });
+        applyLanguage(initialLanguage);
 
         try {
             const response = await fetch(TRANSLATIONS_PATH);
