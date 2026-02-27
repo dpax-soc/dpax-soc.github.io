@@ -306,26 +306,6 @@ h1 {
     margin-bottom: 1.5rem;
 }
 
-.hero-inline-media {
-    margin: 0;
-    border-radius: var(--radius-sm);
-    overflow: hidden;
-    border: 1px solid rgba(162, 187, 219, 0.24);
-    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.22);
-}
-
-.hero-inline-media img {
-    width: 100%;
-    height: clamp(190px, 26vw, 300px);
-    display: block;
-    object-fit: cover;
-    object-position: center;
-}
-
-.hero-inline-media-compact img {
-    height: clamp(140px, 17vw, 210px);
-}
-
 .banner-section {
     padding: 0.15rem 0 0;
 }
@@ -932,10 +912,6 @@ h1 {
 
     .site-nav.open .nav-links {
         display: flex;
-    }
-
-    .header-cta {
-        display: none;
     }
 
     .hero {
