@@ -3,8 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="DPaX shared page template." data-i18n-content="template.meta.description">
-    <title data-i18n="template.meta.title">DPaX | Page Title</title>
+    <meta
+        name="description"
+        content="Privacy policy for DPaX website interactions and contact requests."
+        data-i18n-content="privacy.meta.description"
+    >
+    <meta name="robots" content="noindex,follow,max-image-preview:large">
+    <link rel="canonical" href="https://www.dpax.fr/privacy-policy.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="DPaX">
+    <meta property="og:url" content="https://www.dpax.fr/privacy-policy.html">
+    <meta property="og:title" content="DPaX | Privacy Policy" data-i18n-content="privacy.meta.title">
+    <meta
+        property="og:description"
+        content="Privacy policy for DPaX website interactions and contact requests."
+        data-i18n-content="privacy.meta.description"
+    >
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="DPaX | Privacy Policy" data-i18n-content="privacy.meta.title">
+    <meta
+        name="twitter:description"
+        content="Privacy policy for DPaX website interactions and contact requests."
+        data-i18n-content="privacy.meta.description"
+    >
+    <title data-i18n="privacy.meta.title">DPaX | Privacy Policy</title>
     <link rel="icon" type="image/svg+xml" href="assets/images/brand-favicon.svg">
     <link rel="icon" type="image/png" sizes="64x64" href="assets/images/brand-favicon-64.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,7 +37,7 @@
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="preload" as="image" href="assets/images/brand-logo-dpax-320.webp" type="image/webp">
 </head>
-<body data-page="template">
+<body data-page="privacy-policy">
     <header class="site-header">
         <div class="container header-inner">
             <a href="index.html" class="brand">
@@ -70,44 +92,68 @@
         <section class="hero">
             <div class="container hero-grid">
                 <article class="hero-content" data-reveal>
-                    <span class="eyebrow" data-i18n="template.hero.eyebrow"></span>
-                    <h1 data-i18n="template.hero.title"></h1>
-                    <p class="lead" data-i18n="template.hero.text"></p>
+                    <span class="eyebrow" data-i18n="privacy.hero.eyebrow"></span>
+                    <h1 data-i18n="privacy.hero.title"></h1>
+                    <p class="lead" data-i18n="privacy.hero.lead"></p>
                     <div class="hero-actions">
-                        <a class="button button-primary" href="#" data-i18n="template.hero.primary"></a>
-                        <a class="button button-ghost" href="#" data-i18n="template.hero.secondary"></a>
+                        <a class="button button-primary" href="contact.html?intent=health-check" data-i18n="common.cta.healthCheck"></a>
+                        <a class="button button-ghost" href="contact.html?intent=roadmap-request" data-i18n="common.cta.roadmapRequest"></a>
                     </div>
                 </article>
 
                 <aside class="hero-panel" data-reveal>
                     <article class="panel-card">
-                        <h3 data-i18n="template.panel1.title"></h3>
-                        <p data-i18n="template.panel1.text"></p>
+                        <h2 data-i18n="privacy.panel1.title"></h2>
+                        <p data-i18n="privacy.panel1.text"></p>
                     </article>
                     <article class="panel-card">
-                        <h3 data-i18n="template.panel2.title"></h3>
-                        <p data-i18n="template.panel2.text"></p>
+                        <h2 data-i18n="privacy.panel2.title"></h2>
+                        <p data-i18n="privacy.panel2.text"></p>
                     </article>
                 </aside>
             </div>
         </section>
 
-        <section class="section">
+        <section class="section legal-section">
             <div class="container">
                 <div class="section-head" data-reveal>
                     <div>
-                        <span class="pill" data-i18n="template.section.pill"></span>
-                        <h2 data-i18n="template.section.title"></h2>
+                        <span class="pill" data-i18n="privacy.section.pill"></span>
+                        <h2 data-i18n="privacy.section.title"></h2>
                     </div>
-                    <p data-i18n="template.section.text"></p>
+                    <p data-i18n="privacy.section.text"></p>
                 </div>
+
+                <div class="card-grid two">
+                    <article class="content-card legal-content" data-reveal>
+                        <h3 data-i18n="privacy.card1.title"></h3>
+                        <p data-i18n="privacy.card1.text"></p>
+                    </article>
+                    <article class="content-card legal-content" data-reveal>
+                        <h3 data-i18n="privacy.card2.title"></h3>
+                        <p data-i18n="privacy.card2.text"></p>
+                    </article>
+                    <article class="content-card legal-content" data-reveal>
+                        <h3 data-i18n="privacy.card3.title"></h3>
+                        <p data-i18n="privacy.card3.text"></p>
+                    </article>
+                    <article class="content-card legal-content" data-reveal>
+                        <h3 data-i18n="privacy.card4.title"></h3>
+                        <p data-i18n="privacy.card4.text"></p>
+                    </article>
+                </div>
+
+                <article class="content-card legal-content" data-reveal>
+                    <h3 data-i18n="privacy.contact.title"></h3>
+                    <p data-i18n="privacy.contact.text"></p>
+                </article>
             </div>
         </section>
     </main>
 
     <footer class="site-footer">
         <div class="container footer-inner">
-            <span>&copy; <span data-year></span><span data-i18n="template.footer.copy"></span></span>
+            <span>&copy; <span data-year></span><span data-i18n="privacy.footer.copy"></span></span>
             <div class="footer-links">
                 <a href="index.html" data-i18n="common.nav.home"></a>
                 <a href="services.html" data-i18n="common.nav.services"></a>
