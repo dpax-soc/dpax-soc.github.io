@@ -1,5 +1,6 @@
 :root {
     --bg: #07101d;
+    --chrome-bg: #060e1b;
     --bg-soft: #0f1d33;
     --surface: rgba(14, 28, 49, 0.84);
     --surface-strong: #11223c;
@@ -23,10 +24,13 @@
 
 html {
     scroll-behavior: smooth;
+    min-height: 100%;
+    background-color: var(--chrome-bg);
 }
 
 body {
     margin: 0;
+    min-height: 100%;
     font-family: "Space Grotesk", "Segoe UI", sans-serif;
     color: var(--text);
     background:
@@ -68,7 +72,7 @@ img {
     top: 0;
     z-index: 20;
     backdrop-filter: blur(10px);
-    background: rgba(6, 14, 27, 0.84);
+    background: var(--chrome-bg);
     border-bottom: 1px solid rgba(162, 187, 219, 0.16);
 }
 
@@ -763,6 +767,7 @@ h1 {
 .site-footer {
     margin-top: 4.2rem;
     padding: 2rem 0 2.8rem;
+    background: var(--chrome-bg);
     border-top: 1px solid rgba(162, 187, 219, 0.16);
     color: #9eb2cc;
     font-size: 0.9rem;

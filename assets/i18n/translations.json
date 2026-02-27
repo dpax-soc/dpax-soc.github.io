@@ -10,6 +10,9 @@
     "common.language.fr": "FR",
     "common.cta.contact": "Contact",
     "common.languageSwitcher": "Language switcher",
+    "common.brandMeaning": "Digital Protection against X-Threats",
+    "common.brandLogoAlt": "DPaX logo",
+    "common.social.linkedin": "DPaX on LinkedIn",
 
     "home.meta.description": "DPaX delivers managed SOC services, incident response support, and pentest engagements for SMEs.",
     "home.meta.title": "DPaX | Managed SOC and Pentest Services for SMEs",
@@ -212,6 +215,7 @@
     "blog.feed.empty": "No original LinkedIn posts are available at the moment.",
     "blog.feed.error": "Unable to load LinkedIn posts right now.",
     "blog.feed.linkCta": "View on LinkedIn",
+    "blog.feed.postFallbackTitle": "LinkedIn Post",
     "blog.footer.copy": " DPaX. Security insights and company updates.",
 
     "template.meta.description": "DPaX shared page template.",
@@ -242,6 +246,9 @@
     "common.language.fr": "FR",
     "common.cta.contact": "Contact",
     "common.languageSwitcher": "Sélecteur de langue",
+    "common.brandMeaning": "Protection Numérique contre des Menaces X",
+    "common.brandLogoAlt": "Logo DPaX",
+    "common.social.linkedin": "DPaX sur LinkedIn",
 
     "home.meta.description": "DPaX propose des services SOC managés, un accompagnement en réponse à incident et des missions de pentest pour les PME.",
     "home.meta.title": "DPaX | Services SOC managés et pentest pour PME",
@@ -444,6 +451,7 @@
     "blog.feed.empty": "Aucune publication originale LinkedIn n'est disponible pour le moment.",
     "blog.feed.error": "Impossible de charger les publications LinkedIn pour le moment.",
     "blog.feed.linkCta": "Voir sur LinkedIn",
+    "blog.feed.postFallbackTitle": "Publication LinkedIn",
     "blog.footer.copy": " DPaX. Analyses securite et actualites de l'entreprise.",
 
     "template.meta.description": "Modèle de page partagé DPaX.",

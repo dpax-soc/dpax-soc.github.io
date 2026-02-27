@@ -6,9 +6,6 @@
     const TRANSLATIONS_PATH = "assets/i18n/translations.json";
     const LINKEDIN_POSTS_PATH = "assets/data/linkedin-posts.json";
     const LINKEDIN_POSTS_LIMIT = 20;
-    const BRAND_MEANINGS = [
-        { en: "Digital Protection vs X-Threat", fr: "Protection Numérique face aux Menaces X" }
-    ];
 
     const nav = document.querySelector("[data-nav]");
     const toggle = document.querySelector("[data-nav-toggle]");
@@ -42,10 +39,8 @@
     });
 
     const languageButtons = Array.from(document.querySelectorAll("[data-language-option]"));
-    const brandMeaningElements = Array.from(document.querySelectorAll("[data-dpax-meaning]"));
     let dictionaries = null;
     let activeLanguage = DEFAULT_LANGUAGE;
-    const selectedBrandMeaningIndex = Math.floor(Math.random() * BRAND_MEANINGS.length);
 
     const normalizeLanguage = (value) => {
         if (!value) {
@@ -54,21 +49,6 @@
 
         const languageCode = value.toLowerCase().split("-")[0];
         return SUPPORTED_LANGUAGES.includes(languageCode) ? languageCode : DEFAULT_LANGUAGE;
-    };
-
-    const applyBrandMeaning = (language) => {
-        if (!brandMeaningElements.length || !BRAND_MEANINGS.length) {
-            return;
-        }
-
-        const normalizedLanguage = normalizeLanguage(language);
-        const selectedMeaning = BRAND_MEANINGS[selectedBrandMeaningIndex] || BRAND_MEANINGS[0];
-        const meaningText = selectedMeaning[normalizedLanguage] || selectedMeaning[DEFAULT_LANGUAGE];
-
-        brandMeaningElements.forEach((element) => {
-            element.textContent = meaningText;
-            element.setAttribute("title", meaningText);
-        });
     };
 
     const getStoredLanguage = () => {
@@ -193,6 +173,11 @@
         return null;
     };
 
+    const getTranslationOrEmpty = (key) => {
+        const value = getTranslation(activeLanguage, key);
+        return typeof value === "string" ? value : "";
+    };
+
     const applyTextTranslations = (language) => {
         document.querySelectorAll("[data-i18n]").forEach((element) => {
             const key = element.dataset.i18n;
@@ -232,7 +217,6 @@
         syncLanguageInCurrentUrl(nextLanguage);
         syncLanguageInInternalLinks(nextLanguage);
         updateLanguageButtons(nextLanguage);
-        applyBrandMeaning(nextLanguage);
 
         if (dictionaries) {
             applyTextTranslations(nextLanguage);
@@ -296,9 +280,10 @@
             return value || fallback;
         };
 
-        const emptyMessage = resolveText(emptyLabelElement, "No original LinkedIn posts are available at the moment.");
-        const errorMessage = resolveText(errorLabelElement, "Unable to load LinkedIn posts right now.");
-        const linkLabel = resolveText(linkLabelElement, "View on LinkedIn");
+        const emptyMessage = resolveText(emptyLabelElement, getTranslationOrEmpty("blog.feed.empty"));
+        const errorMessage = resolveText(errorLabelElement, getTranslationOrEmpty("blog.feed.error"));
+        const linkLabel = resolveText(linkLabelElement, getTranslationOrEmpty("blog.feed.linkCta"));
+        const postTitleFallback = getTranslationOrEmpty("blog.feed.postFallbackTitle");
 
         const setStatus = (message, { hidden = false, isError = false } = {}) => {
             if (!statusElement) {
@@ -343,7 +328,7 @@
             const title = document.createElement("h3");
             title.textContent = typeof post.title === "string" && post.title.trim()
                 ? post.title.trim()
-                : "LinkedIn Post";
+                : postTitleFallback;
             card.append(title);
 
             const excerpt = typeof post.excerpt === "string" ? post.excerpt.trim() : "";
@@ -398,31 +383,37 @@
         }
     };
 
-    if (languageButtons.length) {
-        initLocalization();
-    } else {
-        document.documentElement.lang = normalizeLanguage(resolveInitialLanguage());
-        applyBrandMeaning(DEFAULT_LANGUAGE);
-    }
+    const initReveal = () => {
+        const revealItems = document.querySelectorAll("[data-reveal]");
+        if (!revealItems.length) {
+            return;
+        }
 
-    initLinkedInFeed();
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("visible");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            { threshold: 0.2, rootMargin: "0px 0px -50px 0px" }
+        );
 
-    const revealItems = document.querySelectorAll("[data-reveal]");
-    if (!revealItems.length) {
-        return;
-    }
+        revealItems.forEach((item) => observer.observe(item));
+    };
 
-    const observer = new IntersectionObserver(
-        (entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add("visible");
-                    observer.unobserve(entry.target);
-                }
-            });
-        },
-        { threshold: 0.2, rootMargin: "0px 0px -50px 0px" }
-    );
+    const init = async () => {
+        if (languageButtons.length) {
+            await initLocalization();
+        } else {
+            document.documentElement.lang = normalizeLanguage(resolveInitialLanguage());
+        }
 
-    revealItems.forEach((item) => observer.observe(item));
+        await initLinkedInFeed();
+        initReveal();
+    };
+
+    init();
 })();
