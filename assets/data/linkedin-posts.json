@@ -1,30 +1,46 @@
 {
   "source": "https://www.linkedin.com/company/dpax/",
-  "lastSyncedAt": "2026-02-25T08:39:00Z",
+  "lastSyncedAt": "2026-02-27T10:32:19.373Z",
   "posts": [
     {
-      "id": "7432340762014490624",
+      "id": "7433055517406572544",
       "isRepost": false,
-      "url": "https://www.linkedin.com/posts/dpax_cisa-confirms-active-exploitation-of-filezen-activity-7432340762014490624-zJtI",
+      "url": "https://www.linkedin.com/feed/update/urn:li:share:7433055517406572544",
+      "title": "Objet: Multiples vulnérabilités dans les produits VMware",
+      "excerpt": "Une vague massive de vulnérabilités vient de frapper l'écosystème VMware, menaçant directement la stabilité et la sécurité de vos infrastructures. Si votre organisation utilise ces solutions, une prise de conscience immédiate et des actions correctives sont...",
+      "relativeDate": "2h"
+    },
+    {
+      "id": "7432778999719899136",
+      "isRepost": false,
+      "url": "https://www.linkedin.com/feed/update/urn:li:share:7432778999719899136",
+      "title": "Secure personal data",
+      "excerpt": "Votre entreprise est-elle réellement prête à faire face à une fuite de données majeures ? Une simple négligence peut coûter bien plus cher qu'une amende RGPD, elle peut détruire la confiance de vos clients et paralyser durablement votre activité. Voici les...",
+      "relativeDate": "21h"
+    },
+    {
+      "id": "7432340761180008448",
+      "isRepost": false,
+      "url": "https://www.linkedin.com/feed/update/urn:li:share:7432340761180008448",
       "title": "CISA Confirms Active Exploitation of FileZen CVE-2026-25108 Vulnerability",
-      "excerpt": "Une vulnerabilite critique activement exploitee met en peril les systemes de transfert de fichiers. La CISA a ajoute la CVE-2026-25108 a son catalogue KEV.",
-      "relativeDate": "1d"
+      "excerpt": "Une vulnérabilité critique activement exploitée met en péril les systèmes de transfert de fichiers. Votre organisation est-elle à l'abri d'une injection de commandes OS via FileZen ? La CISA vient d'ajouter la vulnérabilité CVE-2026-25108 à son catalogue de...",
+      "relativeDate": "2d"
     },
     {
-      "id": "7431734611623206912",
+      "id": "7431734610826391553",
       "isRepost": false,
-      "url": "https://www.linkedin.com/posts/dpax_weekly-recap-double-tap-skimmers-promptspy-activity-7431734611623206912-AEkX",
-      "title": "Weekly Recap: Double-Tap Skimmers, PromptSpy AI, 30Tbps DDoS, Docker Malware & More",
-      "excerpt": "Le paysage actuel de la cybersecurite exige des strategies proactives face aux menaces emergentes. Cette publication partage une selection de ressources utiles.",
-      "relativeDate": "1d"
+      "url": "https://www.linkedin.com/feed/update/urn:li:share:7431734610826391553",
+      "title": "⚡ Weekly Recap: Double-Tap Skimmers, PromptSpy AI, 30Tbps DDoS, Docker Malware & More",
+      "excerpt": "Le paysage actuel de la cybersécurité exige des stratégies proactives face aux menaces émergentes, de l'exploitation avancée de l'IA au défi quantique imminent. Se tenir informé des analyses d'experts est primordial pour une défense robuste. Nous organisons...",
+      "relativeDate": "3d"
     },
     {
-      "id": "7431690250193858561",
+      "id": "7431690248960602113",
       "isRepost": false,
-      "url": "https://www.linkedin.com/posts/dpax_cybers%C3%A9curit%C3%A9-mssp-pentest-activity-7431690250193858561-3_a6",
-      "title": "Lancement officiel de DPaX : la cybersecurite de pointe au service des PME",
-      "excerpt": "Annonce du lancement officiel de DPaX avec une approche combinant MSSP, SOC et pentest pour les petites et moyennes entreprises.",
-      "relativeDate": "1d"
+      "url": "https://www.linkedin.com/feed/update/urn:li:share:7431690248960602113",
+      "title": "Lancement officiel de DPaX :",
+      "excerpt": "Lancement officiel de DPaX : La cybersécurité de pointe au service des PME. Le paysage des menaces numériques évolue plus vite que jamais. Pour les petites et moyennes entreprises, la question n'est plus de savoir si elles seront visées, mais quand. C’est p...",
+      "relativeDate": "3d"
     }
   ]
 }
