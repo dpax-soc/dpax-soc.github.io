@@ -129,15 +129,6 @@
         return storedLanguage || getBrowserLanguage();
     };
 
-    const getEmbeddedTranslations = () => {
-        const maybeTranslations = window.DPaX_TRANSLATIONS;
-        if (!maybeTranslations || typeof maybeTranslations !== "object") {
-            return null;
-        }
-
-        return maybeTranslations;
-    };
-
     const updateLanguageButtons = (language) => {
         languageButtons.forEach((button) => {
             const buttonLanguage = normalizeLanguage(button.dataset.languageOption);
@@ -148,7 +139,7 @@
     };
 
     const toRelativeHref = (urlObject, originalHref) => {
-        if (/^(?:[a-z]+:)?\/\//i.test(originalHref) || originalHref.startsWith("file:")) {
+        if (/^(?:[a-z]+:)?\/\//i.test(originalHref)) {
             return urlObject.toString();
         }
 
@@ -271,13 +262,6 @@
         const initialLanguage = resolveInitialLanguage();
         applyLanguage(initialLanguage, { persist: false });
 
-        const embeddedTranslations = getEmbeddedTranslations();
-        if (window.location.protocol === "file:" && embeddedTranslations) {
-            dictionaries = embeddedTranslations;
-            applyLanguage(activeLanguage, { persist: false });
-            return;
-        }
-
         try {
             const response = await fetch(TRANSLATIONS_PATH);
             if (!response.ok) {
@@ -287,12 +271,6 @@
             dictionaries = await response.json();
             applyLanguage(activeLanguage, { persist: false });
         } catch (error) {
-            if (embeddedTranslations) {
-                dictionaries = embeddedTranslations;
-                applyLanguage(activeLanguage, { persist: false });
-                return;
-            }
-
             console.error("Unable to load translation file.", error);
         }
     };
@@ -320,7 +298,6 @@
 
         const emptyMessage = resolveText(emptyLabelElement, "No original LinkedIn posts are available at the moment.");
         const errorMessage = resolveText(errorLabelElement, "Unable to load LinkedIn posts right now.");
-        const protocolMessage = "Open this page through a local web server (http:// or https://) to load LinkedIn posts.";
         const linkLabel = resolveText(linkLabelElement, "View on LinkedIn");
 
         const setStatus = (message, { hidden = false, isError = false } = {}) => {
@@ -417,8 +394,7 @@
             postsContainer.innerHTML = "";
             setCount(0);
 
-            const message = window.location.protocol === "file:" ? protocolMessage : errorMessage;
-            setStatus(message, { isError: true });
+            setStatus(errorMessage, { isError: true });
         }
     };
 
