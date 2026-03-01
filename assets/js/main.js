@@ -392,8 +392,10 @@
         }
 
         const hourlyRevenueInput = estimator.querySelector("[data-roi-input='hourlyRevenue']");
+        const useCaseSelect = estimator.querySelector("[data-roi-input='useCase']");
         const incidentHoursInput = estimator.querySelector("[data-roi-input='incidentHours']");
         const recoveryCostInput = estimator.querySelector("[data-roi-input='recoveryCost']");
+        const useCaseDetailsElement = estimator.querySelector("[data-roi-use-case-details]");
 
         const totalCostOutput = document.querySelector("[data-roi-output='totalCost']");
         const avoid30Output = document.querySelector("[data-roi-output='avoid30']");
@@ -401,6 +403,7 @@
 
         if (
             !hourlyRevenueInput
+            || !useCaseSelect
             || !incidentHoursInput
             || !recoveryCostInput
             || !totalCostOutput
@@ -433,10 +436,37 @@
             }).format(value);
         };
 
+        const useCaseProfiles = {
+            ransomware: { incidentHours: 24, recoveryCost: 15000 },
+            phishing: { incidentHours: 6, recoveryCost: 4000 },
+            bec: { incidentHours: 12, recoveryCost: 10000 }
+        };
+
+        const getCurrentProfile = () => {
+            const selectedUseCase = useCaseSelect.value;
+            if (Object.prototype.hasOwnProperty.call(useCaseProfiles, selectedUseCase)) {
+                return useCaseProfiles[selectedUseCase];
+            }
+            return useCaseProfiles.ransomware;
+        };
+
+        const syncUseCaseFields = () => {
+            const { incidentHours, recoveryCost } = getCurrentProfile();
+            incidentHoursInput.value = String(incidentHours);
+            recoveryCostInput.value = String(recoveryCost);
+
+            if (useCaseDetailsElement) {
+                const downtimeLabel = getTranslationOrEmpty("home.estimator.useCase.detailsDowntime")
+                    || (activeLanguage === "fr" ? "Hypothèse d'interruption" : "Downtime assumption");
+                const recoveryLabel = getTranslationOrEmpty("home.estimator.useCase.detailsRecovery")
+                    || (activeLanguage === "fr" ? "Hypothèse de coût de reprise" : "Recovery cost assumption");
+                useCaseDetailsElement.textContent = `${downtimeLabel}: ${incidentHours} h | ${recoveryLabel}: ${formatCurrency(recoveryCost)}`;
+            }
+        };
+
         const recalculate = () => {
             const hourlyRevenue = parsePositiveNumber(hourlyRevenueInput.value);
-            const incidentHours = parsePositiveNumber(incidentHoursInput.value);
-            const recoveryCost = parsePositiveNumber(recoveryCostInput.value);
+            const { incidentHours, recoveryCost } = getCurrentProfile();
 
             const totalCost = (hourlyRevenue * incidentHours) + recoveryCost;
             const avoid30 = totalCost * 0.3;
@@ -447,16 +477,24 @@
             avoid50Output.textContent = formatCurrency(avoid50);
         };
 
-        [hourlyRevenueInput, incidentHoursInput, recoveryCostInput].forEach((input) => {
-            input.addEventListener("input", recalculate);
-            input.addEventListener("blur", () => {
-                const nextValue = parsePositiveNumber(input.value);
-                input.value = String(Math.round(nextValue));
-                recalculate();
-            });
+        hourlyRevenueInput.addEventListener("input", recalculate);
+        hourlyRevenueInput.addEventListener("blur", () => {
+            const nextValue = parsePositiveNumber(hourlyRevenueInput.value);
+            hourlyRevenueInput.value = String(Math.round(nextValue));
+            recalculate();
         });
 
-        window.addEventListener("dpax:language-changed", recalculate);
+        useCaseSelect.addEventListener("change", () => {
+            syncUseCaseFields();
+            recalculate();
+        });
+
+        window.addEventListener("dpax:language-changed", () => {
+            syncUseCaseFields();
+            recalculate();
+        });
+
+        syncUseCaseFields();
         recalculate();
     };
 
