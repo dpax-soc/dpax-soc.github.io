@@ -223,6 +223,8 @@
             applyAttributeTranslations(nextLanguage);
         }
 
+        window.dispatchEvent(new CustomEvent("dpax:language-changed", { detail: { language: nextLanguage } }));
+
         if (persist) {
             storeLanguage(nextLanguage);
         }
@@ -383,6 +385,81 @@
         }
     };
 
+    const initRoiEstimator = () => {
+        const estimator = document.querySelector("[data-roi-estimator]");
+        if (!estimator) {
+            return;
+        }
+
+        const hourlyRevenueInput = estimator.querySelector("[data-roi-input='hourlyRevenue']");
+        const incidentHoursInput = estimator.querySelector("[data-roi-input='incidentHours']");
+        const recoveryCostInput = estimator.querySelector("[data-roi-input='recoveryCost']");
+
+        const totalCostOutput = document.querySelector("[data-roi-output='totalCost']");
+        const avoid30Output = document.querySelector("[data-roi-output='avoid30']");
+        const avoid50Output = document.querySelector("[data-roi-output='avoid50']");
+
+        if (
+            !hourlyRevenueInput
+            || !incidentHoursInput
+            || !recoveryCostInput
+            || !totalCostOutput
+            || !avoid30Output
+            || !avoid50Output
+        ) {
+            return;
+        }
+
+        const parsePositiveNumber = (value) => {
+            if (typeof value !== "string") {
+                return 0;
+            }
+
+            const normalized = value.replace(",", ".").trim();
+            const parsed = Number.parseFloat(normalized);
+            if (!Number.isFinite(parsed) || parsed < 0) {
+                return 0;
+            }
+
+            return parsed;
+        };
+
+        const formatCurrency = (value) => {
+            const locale = activeLanguage === "fr" ? "fr-FR" : "en-US";
+            return new Intl.NumberFormat(locale, {
+                style: "currency",
+                currency: "EUR",
+                maximumFractionDigits: 0
+            }).format(value);
+        };
+
+        const recalculate = () => {
+            const hourlyRevenue = parsePositiveNumber(hourlyRevenueInput.value);
+            const incidentHours = parsePositiveNumber(incidentHoursInput.value);
+            const recoveryCost = parsePositiveNumber(recoveryCostInput.value);
+
+            const totalCost = (hourlyRevenue * incidentHours) + recoveryCost;
+            const avoid30 = totalCost * 0.3;
+            const avoid50 = totalCost * 0.5;
+
+            totalCostOutput.textContent = formatCurrency(totalCost);
+            avoid30Output.textContent = formatCurrency(avoid30);
+            avoid50Output.textContent = formatCurrency(avoid50);
+        };
+
+        [hourlyRevenueInput, incidentHoursInput, recoveryCostInput].forEach((input) => {
+            input.addEventListener("input", recalculate);
+            input.addEventListener("blur", () => {
+                const nextValue = parsePositiveNumber(input.value);
+                input.value = String(Math.round(nextValue));
+                recalculate();
+            });
+        });
+
+        window.addEventListener("dpax:language-changed", recalculate);
+        recalculate();
+    };
+
     const initReveal = () => {
         const revealItems = document.querySelectorAll("[data-reveal]");
         if (!revealItems.length) {
@@ -412,6 +489,7 @@
         }
 
         await initLinkedInFeed();
+        initRoiEstimator();
         initReveal();
     };
 

@@ -241,6 +241,112 @@
             </div>
         </section>
 
+        <section class="section" id="roi-impact">
+            <div class="container">
+                <div class="section-head" data-reveal>
+                    <div>
+                        <span class="pill" data-i18n="home.roi.pill"></span>
+                        <h2 data-i18n="home.roi.title"></h2>
+                    </div>
+                    <p data-i18n="home.roi.text"></p>
+                </div>
+
+                <div class="card-grid three">
+                    <article class="content-card" data-reveal>
+                        <h3 data-i18n="home.roi.card1.title"></h3>
+                        <p data-i18n="home.roi.card1.text"></p>
+                        <p class="case-outcome" data-i18n="home.roi.card1.metric"></p>
+                    </article>
+                    <article class="content-card" data-reveal>
+                        <h3 data-i18n="home.roi.card2.title"></h3>
+                        <p data-i18n="home.roi.card2.text"></p>
+                        <p class="case-outcome" data-i18n="home.roi.card2.metric"></p>
+                    </article>
+                    <article class="content-card" data-reveal>
+                        <h3 data-i18n="home.roi.card3.title"></h3>
+                        <p data-i18n="home.roi.card3.text"></p>
+                        <p class="case-outcome" data-i18n="home.roi.card3.metric"></p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="roi-estimator">
+            <div class="container split">
+                <article class="content-card" data-reveal>
+                    <span class="pill" data-i18n="home.estimator.pill"></span>
+                    <h3 data-i18n="home.estimator.title"></h3>
+                    <p data-i18n="home.estimator.text"></p>
+
+                    <form class="estimator-form" data-roi-estimator onsubmit="return false;">
+                        <label class="estimator-field">
+                            <span data-i18n="home.estimator.input1.label"></span>
+                            <input
+                                type="number"
+                                min="0"
+                                step="50"
+                                value="300"
+                                data-roi-input="hourlyRevenue"
+                                data-i18n-placeholder="home.estimator.input1.placeholder"
+                                inputmode="decimal"
+                            >
+                            <small data-i18n="home.estimator.input1.help"></small>
+                        </label>
+
+                        <label class="estimator-field">
+                            <span data-i18n="home.estimator.input2.label"></span>
+                            <input
+                                type="number"
+                                min="0"
+                                step="1"
+                                value="16"
+                                data-roi-input="incidentHours"
+                                data-i18n-placeholder="home.estimator.input2.placeholder"
+                                inputmode="decimal"
+                            >
+                            <small data-i18n="home.estimator.input2.help"></small>
+                        </label>
+
+                        <label class="estimator-field">
+                            <span data-i18n="home.estimator.input3.label"></span>
+                            <input
+                                type="number"
+                                min="0"
+                                step="100"
+                                value="7000"
+                                data-roi-input="recoveryCost"
+                                data-i18n-placeholder="home.estimator.input3.placeholder"
+                                inputmode="decimal"
+                            >
+                            <small data-i18n="home.estimator.input3.help"></small>
+                        </label>
+                    </form>
+                </article>
+
+                <article class="content-card content-card-vcenter" data-reveal>
+                    <h3 data-i18n="home.estimator.results.title"></h3>
+                    <p data-i18n="home.estimator.results.text"></p>
+
+                    <div class="estimator-results">
+                        <article class="estimator-result">
+                            <span class="estimator-result-label" data-i18n="home.estimator.results.total.label"></span>
+                            <strong data-roi-output="totalCost">€0</strong>
+                        </article>
+                        <article class="estimator-result">
+                            <span class="estimator-result-label" data-i18n="home.estimator.results.avoid30.label"></span>
+                            <strong data-roi-output="avoid30">€0</strong>
+                        </article>
+                        <article class="estimator-result">
+                            <span class="estimator-result-label" data-i18n="home.estimator.results.avoid50.label"></span>
+                            <strong data-roi-output="avoid50">€0</strong>
+                        </article>
+                    </div>
+
+                    <p class="disclaimer-text" data-i18n="home.estimator.disclaimer"></p>
+                </article>
+            </div>
+        </section>
+
         <section class="section" id="services-overview">
             <div class="container">
                 <div class="section-head" data-reveal>
@@ -299,6 +405,74 @@
                         <li data-i18n="home.why.point2"></li>
                         <li data-i18n="home.why.point3"></li>
                     </ul>
+                </article>
+            </div>
+        </section>
+
+        <section class="section" id="director-faq">
+            <div class="container">
+                <div class="section-head" data-reveal>
+                    <div>
+                        <span class="pill" data-i18n="home.faq.pill"></span>
+                        <h2 data-i18n="home.faq.title"></h2>
+                    </div>
+                    <p data-i18n="home.faq.text"></p>
+                </div>
+
+                <div class="card-grid two">
+                    <article class="content-card" data-reveal>
+                        <h3 data-i18n="home.faq.card1.q"></h3>
+                        <p data-i18n="home.faq.card1.a"></p>
+                    </article>
+                    <article class="content-card" data-reveal>
+                        <h3 data-i18n="home.faq.card2.q"></h3>
+                        <p data-i18n="home.faq.card2.a"></p>
+                    </article>
+                    <article class="content-card" data-reveal>
+                        <h3 data-i18n="home.faq.card3.q"></h3>
+                        <p data-i18n="home.faq.card3.a"></p>
+                    </article>
+                    <article class="content-card" data-reveal>
+                        <h3 data-i18n="home.faq.card4.q"></h3>
+                        <p data-i18n="home.faq.card4.a"></p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="start-here">
+            <div class="container split">
+                <article class="content-card" data-reveal>
+                    <h3 data-i18n="home.start.title"></h3>
+                    <p data-i18n="home.start.text"></p>
+                    <div class="timeline">
+                        <div class="timeline-step">
+                            <strong data-i18n="home.start.step1.title"></strong>
+                            <p data-i18n="home.start.step1.text"></p>
+                        </div>
+                        <div class="timeline-step">
+                            <strong data-i18n="home.start.step2.title"></strong>
+                            <p data-i18n="home.start.step2.text"></p>
+                        </div>
+                        <div class="timeline-step">
+                            <strong data-i18n="home.start.step3.title"></strong>
+                            <p data-i18n="home.start.step3.text"></p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="content-card content-card-vcenter" data-reveal>
+                    <h3 data-i18n="home.start.outcomeTitle"></h3>
+                    <p data-i18n="home.start.outcomeText"></p>
+                    <ul class="bullet-list">
+                        <li data-i18n="home.start.point1"></li>
+                        <li data-i18n="home.start.point2"></li>
+                        <li data-i18n="home.start.point3"></li>
+                    </ul>
+                    <div class="hero-actions">
+                        <a class="button button-primary" href="contact.html?intent=health-check" data-i18n="common.cta.healthCheck"></a>
+                        <a class="button button-ghost" href="contact.html?intent=roadmap-request" data-i18n="common.cta.roadmapRequest"></a>
+                    </div>
                 </article>
             </div>
         </section>

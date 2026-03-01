@@ -717,6 +717,70 @@ h1 {
     font-size: 0.9rem;
 }
 
+.estimator-form {
+    display: grid;
+    gap: 0.85rem;
+}
+
+.estimator-field {
+    display: grid;
+    gap: 0.35rem;
+}
+
+.estimator-field > span {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #e4f0ff;
+}
+
+.estimator-field input {
+    width: 100%;
+    border: 1px solid rgba(162, 187, 219, 0.3);
+    background: rgba(10, 21, 38, 0.78);
+    color: #eef6ff;
+    border-radius: 10px;
+    padding: 0.64rem 0.7rem;
+    font: inherit;
+}
+
+.estimator-field input:focus {
+    outline: none;
+    border-color: rgba(82, 210, 255, 0.65);
+    box-shadow: 0 0 0 2px rgba(82, 210, 255, 0.2);
+}
+
+.estimator-field small {
+    color: #9cb3ce;
+    font-size: 0.8rem;
+    line-height: 1.4;
+}
+
+.estimator-results {
+    display: grid;
+    gap: 0.85rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.estimator-result {
+    display: grid;
+    gap: 0.35rem;
+    padding: 0.9rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(162, 187, 219, 0.22);
+    background: rgba(10, 20, 36, 0.58);
+}
+
+.estimator-result-label {
+    font-size: 0.8rem;
+    color: #c8dbef;
+}
+
+.estimator-result strong {
+    color: #f4f8ff;
+    font-size: 1.1rem;
+    line-height: 1.25;
+}
+
 .cta-band {
     margin-top: 3.2rem;
     padding: 1.5rem;
@@ -926,6 +990,10 @@ h1 {
 
     .card-grid.five {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .estimator-results {
+        grid-template-columns: 1fr;
     }
 
     .stat-list {
