@@ -1,6 +1,6 @@
 {
   "source": "https://www.linkedin.com/company/dpax/",
-  "lastSyncedAt": "2026-02-28T04:22:54.256Z",
+  "lastSyncedAt": "2026-03-01T05:11:20.981Z",
   "posts": [
     {
       "id": "7433055517406572544",
@@ -8,7 +8,7 @@
       "url": "https://www.linkedin.com/feed/update/urn:li:share:7433055517406572544",
       "title": "Objet: Multiples vulnérabilités dans les produits VMware",
       "excerpt": "Une vague massive de vulnérabilités vient de frapper l'écosystème VMware, menaçant directement la stabilité et la sécurité de vos infrastructures. Si votre organisation utilise ces solutions, une prise de conscience immédiate et des actions correctives sont...",
-      "relativeDate": "20h"
+      "relativeDate": "1d"
     },
     {
       "id": "7432778999719899136",
@@ -16,7 +16,7 @@
       "url": "https://www.linkedin.com/feed/update/urn:li:share:7432778999719899136",
       "title": "Secure personal data",
       "excerpt": "Votre entreprise est-elle réellement prête à faire face à une fuite de données majeures ? Une simple négligence peut coûter bien plus cher qu'une amende RGPD, elle peut détruire la confiance de vos clients et paralyser durablement votre activité. Voici les...",
-      "relativeDate": "1d"
+      "relativeDate": "2d"
     },
     {
       "id": "7432340761180008448",
@@ -24,7 +24,7 @@
       "url": "https://www.linkedin.com/feed/update/urn:li:share:7432340761180008448",
       "title": "CISA Confirms Active Exploitation of FileZen CVE-2026-25108 Vulnerability",
       "excerpt": "Une vulnérabilité critique activement exploitée met en péril les systèmes de transfert de fichiers. Votre organisation est-elle à l'abri d'une injection de commandes OS via FileZen ? La CISA vient d'ajouter la vulnérabilité CVE-2026-25108 à son catalogue de...",
-      "relativeDate": "2d"
+      "relativeDate": "3d"
     },
     {
       "id": "7431734610826391553",
@@ -32,7 +32,7 @@
       "url": "https://www.linkedin.com/feed/update/urn:li:share:7431734610826391553",
       "title": "⚡ Weekly Recap: Double-Tap Skimmers, PromptSpy AI, 30Tbps DDoS, Docker Malware & More",
       "excerpt": "Le paysage actuel de la cybersécurité exige des stratégies proactives face aux menaces émergentes, de l'exploitation avancée de l'IA au défi quantique imminent. Se tenir informé des analyses d'experts est primordial pour une défense robuste. Nous organisons...",
-      "relativeDate": "4d"
+      "relativeDate": "5d"
     },
     {
       "id": "7431690248960602113",
@@ -40,7 +40,7 @@
       "url": "https://www.linkedin.com/feed/update/urn:li:share:7431690248960602113",
       "title": "Lancement officiel de DPaX :",
       "excerpt": "Lancement officiel de DPaX : La cybersécurité de pointe au service des PME. Le paysage des menaces numériques évolue plus vite que jamais. Pour les petites et moyennes entreprises, la question n'est plus de savoir si elles seront visées, mais quand. C’est p...",
-      "relativeDate": "4d"
+      "relativeDate": "5d"
     }
   ]
 }
