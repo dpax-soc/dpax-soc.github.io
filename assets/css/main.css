@@ -69,11 +69,13 @@ img {
     line-height: 0;
     vertical-align: middle;
     color: #9beeff;
+    width: 1.4rem;
+    height: 1.4rem;
 }
 
 .icon-heading [data-icon]:not(.icon-ready),
 .icon-label [data-icon]:not(.icon-ready) {
-    display: none;
+    visibility: hidden;
 }
 
 [data-icon] .site-icon {
@@ -117,6 +119,8 @@ img {
 
 h2.icon-heading [data-icon] {
     color: #7ee6ff;
+    width: 1.62rem;
+    height: 1.62rem;
 }
 
 h2.icon-heading [data-icon] .site-icon {
@@ -126,6 +130,8 @@ h2.icon-heading [data-icon] .site-icon {
 
 h3.icon-heading [data-icon] {
     color: #a4f1ff;
+    width: 1.42rem;
+    height: 1.42rem;
 }
 
 h3.icon-heading [data-icon] .site-icon {
@@ -519,6 +525,8 @@ h1 {
 
 .section {
     padding: 3.2rem 0 0;
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 920px;
 }
 
 #soc-services {

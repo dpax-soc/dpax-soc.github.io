@@ -345,12 +345,16 @@
         });
     };
 
-    const applyLanguage = (language, { persist = true } = {}) => {
+    const applyLanguage = (language, { persist = true, syncLinks = true, syncUrl = true } = {}) => {
         const nextLanguage = normalizeLanguage(language);
         activeLanguage = nextLanguage;
         document.documentElement.lang = nextLanguage;
-        syncLanguageInCurrentUrl(nextLanguage);
-        syncLanguageInInternalLinks(nextLanguage);
+        if (syncUrl) {
+            syncLanguageInCurrentUrl(nextLanguage);
+        }
+        if (syncLinks) {
+            syncLanguageInInternalLinks(nextLanguage);
+        }
         updateLanguageButtons(nextLanguage);
 
         if (dictionaries) {
@@ -381,7 +385,8 @@
     const initLocalization = async () => {
         bindLanguageSwitcher();
         const initialLanguage = resolveInitialLanguage();
-        applyLanguage(initialLanguage);
+        // Avoid mutating every internal link during first paint.
+        applyLanguage(initialLanguage, { syncLinks: false });
 
         try {
             const response = await fetch(TRANSLATIONS_PATH);
@@ -390,7 +395,7 @@
             }
 
             dictionaries = await response.json();
-            applyLanguage(activeLanguage, { persist: false });
+            applyLanguage(activeLanguage, { persist: false, syncLinks: false, syncUrl: false });
         } catch (error) {
             console.error("Unable to load translation file.", error);
         }
@@ -640,9 +645,17 @@
             document.documentElement.lang = normalizeLanguage(resolveInitialLanguage());
         }
 
-        const iconInitPromise = initIcons();
-        await initLinkedInFeed();
-        await iconInitPromise;
+        // Defer heavier DOM work to idle time to reduce first-load main-thread pressure.
+        const runDeferredUiWork = () => {
+            void initIcons();
+            void initLinkedInFeed();
+        };
+        if ("requestIdleCallback" in window) {
+            window.requestIdleCallback(runDeferredUiWork, { timeout: 1200 });
+        } else {
+            window.setTimeout(runDeferredUiWork, 0);
+        }
+
         initRoiEstimator();
     };
 
