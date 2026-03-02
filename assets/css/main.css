@@ -482,6 +482,10 @@ h1 {
     line-height: 1.45;
 }
 
+.hero-content > .targets-disclaimer + .hero-actions {
+    margin-top: 0.9rem;
+}
+
 .hero-panel {
     padding: 1.35rem;
     display: grid;
@@ -553,6 +557,13 @@ h1 {
     font-size: 0.8rem;
     letter-spacing: 0.05em;
     text-transform: uppercase;
+}
+
+.content-card > .pill,
+.service-card > .pill {
+    width: fit-content;
+    max-width: 100%;
+    align-self: flex-start;
 }
 
 .section-head .pill {
