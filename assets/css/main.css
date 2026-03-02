@@ -62,6 +62,92 @@ img {
     display: block;
 }
 
+[data-icon] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+    vertical-align: middle;
+    color: #9beeff;
+}
+
+.icon-heading [data-icon]:not(.icon-ready),
+.icon-label [data-icon]:not(.icon-ready) {
+    display: none;
+}
+
+[data-icon] .site-icon {
+    width: 1.4rem;
+    height: 1.4rem;
+    display: block;
+    filter: drop-shadow(0 0 7px rgba(82, 210, 255, 0.28));
+}
+
+[data-icon] .site-icon[stroke]:not([stroke="none"]) {
+    stroke: currentColor !important;
+}
+
+[data-icon] .site-icon[fill]:not([fill="none"]) {
+    fill: currentColor !important;
+}
+
+[data-icon] .site-icon [stroke]:not([stroke="none"]) {
+    stroke: currentColor !important;
+}
+
+[data-icon] .site-icon [fill]:not([fill="none"]) {
+    fill: currentColor !important;
+}
+
+.icon-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.72rem;
+}
+
+.icon-heading [data-icon] {
+    flex: 0 0 auto;
+    margin-top: 0;
+}
+
+.icon-heading [data-icon] .site-icon {
+    width: 1.38rem;
+    height: 1.38rem;
+}
+
+h2.icon-heading [data-icon] {
+    color: #7ee6ff;
+}
+
+h2.icon-heading [data-icon] .site-icon {
+    width: 1.62rem;
+    height: 1.62rem;
+}
+
+h3.icon-heading [data-icon] {
+    color: #a4f1ff;
+}
+
+h3.icon-heading [data-icon] .site-icon {
+    width: 1.42rem;
+    height: 1.42rem;
+}
+
+.icon-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.icon-label [data-icon] {
+    color: #b8f6ff;
+}
+
+.icon-label [data-icon] .site-icon {
+    width: 1.16rem;
+    height: 1.16rem;
+}
+
 .container {
     width: min(calc(100% - 2.5rem), var(--max));
     margin-inline: auto;
@@ -844,6 +930,17 @@ h1 {
     margin-bottom: 0.3rem;
 }
 
+.contact-item strong.icon-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.66rem;
+}
+
+.contact-item strong.icon-label [data-icon] .site-icon {
+    width: 1.06rem;
+    height: 1.06rem;
+}
+
 .profile-section {
     padding-top: 1rem;
 }
@@ -1009,6 +1106,16 @@ h1 {
     .feature-banner {
         height: clamp(76px, 12vw, 96px);
     }
+
+    h2.icon-heading [data-icon] .site-icon {
+        width: 1.46rem;
+        height: 1.46rem;
+    }
+
+    h3.icon-heading [data-icon] .site-icon {
+        width: 1.3rem;
+        height: 1.3rem;
+    }
 }
 
 @media (max-width: 760px) {
@@ -1092,5 +1199,19 @@ h1 {
 
     .container {
         width: min(calc(100% - 1.4rem), var(--max));
+    }
+
+    .icon-heading {
+        gap: 0.56rem;
+    }
+
+    h2.icon-heading [data-icon] .site-icon {
+        width: 1.3rem;
+        height: 1.3rem;
+    }
+
+    h3.icon-heading [data-icon] .site-icon {
+        width: 1.2rem;
+        height: 1.2rem;
     }
 }

@@ -4,6 +4,7 @@
     const STORAGE_KEY = "dpax-language";
     const URL_LANGUAGE_PARAM = "lang";
     const TRANSLATIONS_PATH = "assets/i18n/translations.json";
+    const ICONS_PATH = "assets/images/svg-icons.json";
     const LINKEDIN_POSTS_PATH = "assets/data/linkedin-posts.json";
     const LINKEDIN_POSTS_LIMIT = 20;
 
@@ -41,6 +42,140 @@
     const languageButtons = Array.from(document.querySelectorAll("[data-language-option]"));
     let dictionaries = null;
     let activeLanguage = DEFAULT_LANGUAGE;
+    let iconCatalog = null;
+
+    const normalizeIconKey = (value) => String(value || "")
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+
+    const getIconCatalog = async () => {
+        if (iconCatalog) {
+            return iconCatalog;
+        }
+
+        try {
+            const response = await fetch(ICONS_PATH);
+            if (!response.ok) {
+                throw new Error(`Failed to load icon catalog: ${response.status}`);
+            }
+
+            const payload = await response.json();
+            const icons = payload && Array.isArray(payload.icons) ? payload.icons : [];
+            const nextCatalog = new Map();
+
+            icons.forEach((icon) => {
+                if (!icon || typeof icon !== "object" || typeof icon.svg !== "string") {
+                    return;
+                }
+
+                const key = normalizeIconKey(icon.id || icon.name || icon.label);
+                if (!key) {
+                    return;
+                }
+
+                nextCatalog.set(key, icon.svg);
+            });
+
+            iconCatalog = nextCatalog;
+        } catch (error) {
+            console.error("Unable to load icon catalog.", error);
+            iconCatalog = new Map();
+        }
+
+        return iconCatalog;
+    };
+
+    const normalizeSvgForRendering = (svgElement) => {
+        if (!(svgElement instanceof SVGElement)) {
+            return;
+        }
+
+        const viewBox = svgElement.getAttribute("viewBox");
+        let fallbackWidth = 24;
+        let fallbackHeight = 24;
+
+        if (typeof viewBox === "string") {
+            const parts = viewBox.trim().split(/\s+/).map((value) => Number.parseFloat(value));
+            if (parts.length === 4 && parts.every((value) => Number.isFinite(value))) {
+                fallbackWidth = Math.abs(parts[2]) || 24;
+                fallbackHeight = Math.abs(parts[3]) || 24;
+            }
+        }
+
+        svgElement.querySelectorAll("clipPath rect").forEach((rect) => {
+            if (!rect.hasAttribute("width")) {
+                rect.setAttribute("width", String(fallbackWidth));
+            }
+            if (!rect.hasAttribute("height")) {
+                rect.setAttribute("height", String(fallbackHeight));
+            }
+        });
+    };
+
+    const applyIconMarkup = (target, svgMarkup) => {
+        target.innerHTML = svgMarkup;
+
+        const svgElement = target.querySelector("svg");
+        if (!svgElement) {
+            target.classList.add("icon-missing");
+            return;
+        }
+
+        svgElement.classList.add("site-icon");
+        normalizeSvgForRendering(svgElement);
+
+        const iconClass = target.dataset.iconClass;
+        if (iconClass) {
+            iconClass.split(/\s+/).filter(Boolean).forEach((className) => {
+                svgElement.classList.add(className);
+            });
+        }
+
+        const iconSize = Number.parseFloat(target.dataset.iconSize || "");
+        if (Number.isFinite(iconSize) && iconSize > 0) {
+            svgElement.setAttribute("width", String(iconSize));
+            svgElement.setAttribute("height", String(iconSize));
+        }
+
+        const iconLabel = (target.dataset.iconLabel || "").trim();
+        if (iconLabel) {
+            svgElement.setAttribute("role", "img");
+            svgElement.setAttribute("aria-label", iconLabel);
+            svgElement.removeAttribute("aria-hidden");
+        } else {
+            svgElement.setAttribute("aria-hidden", "true");
+            svgElement.removeAttribute("role");
+            svgElement.removeAttribute("aria-label");
+        }
+
+        target.classList.add("icon-ready");
+    };
+
+    const initIcons = async () => {
+        const iconTargets = Array.from(document.querySelectorAll("[data-icon]"));
+        if (!iconTargets.length) {
+            return;
+        }
+
+        const catalog = await getIconCatalog();
+        iconTargets.forEach((target) => {
+            const requestedKey = normalizeIconKey(target.dataset.icon);
+            if (!requestedKey) {
+                target.classList.add("icon-missing");
+                return;
+            }
+
+            const svgMarkup = catalog.get(requestedKey);
+            if (!svgMarkup) {
+                target.classList.add("icon-missing");
+                return;
+            }
+
+            applyIconMarkup(target, svgMarkup);
+        });
+    };
 
     const normalizeLanguage = (value) => {
         if (!value) {
@@ -505,7 +640,9 @@
             document.documentElement.lang = normalizeLanguage(resolveInitialLanguage());
         }
 
+        const iconInitPromise = initIcons();
         await initLinkedInFeed();
+        await iconInitPromise;
         initRoiEstimator();
     };
 
