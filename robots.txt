@@ -1,4 +1,1 @@
-User-agent: *
-Disallow:
-
 Sitemap: https://www.dpax.fr/sitemap.xml
