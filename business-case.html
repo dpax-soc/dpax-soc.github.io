@@ -3,6 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+    (() => {
+        const STORAGE_KEY = "dpax-language";
+        const URL_LANGUAGE_PARAM = "lang";
+        const DEFAULT_LANGUAGE = "en";
+        const SUPPORTED_LANGUAGES = new Set(["en", "fr"]);
+
+        const normalizeLanguage = (value) => {
+            if (!value) {
+                return DEFAULT_LANGUAGE;
+            }
+
+            const languageCode = String(value).toLowerCase().split("-")[0];
+            return SUPPORTED_LANGUAGES.has(languageCode) ? languageCode : DEFAULT_LANGUAGE;
+        };
+
+        const resolveInitialLanguage = () => {
+            try {
+                const urlLanguage = new URL(window.location.href).searchParams.get(URL_LANGUAGE_PARAM);
+                if (urlLanguage) {
+                    return normalizeLanguage(urlLanguage);
+                }
+            } catch (error) {
+                // Ignore URL parsing failures.
+            }
+
+            try {
+                const storedLanguage = localStorage.getItem(STORAGE_KEY);
+                if (storedLanguage) {
+                    return normalizeLanguage(storedLanguage);
+                }
+            } catch (error) {
+                // Ignore storage access failures.
+            }
+
+            if (Array.isArray(navigator.languages) && navigator.languages.length > 0) {
+                return normalizeLanguage(navigator.languages[0]);
+            }
+
+            return normalizeLanguage(navigator.language);
+        };
+
+        if (resolveInitialLanguage() !== DEFAULT_LANGUAGE) {
+            document.documentElement.classList.add("lang-initializing");
+            window.setTimeout(() => {
+                document.documentElement.classList.remove("lang-initializing");
+            }, 3000);
+        }
+    })();
+    </script>
     <meta
         name="description"
         content="Business case for TPE/PME leaders: understand digital risk, estimate financial exposure, and decide the right cyber protection scope."
@@ -97,11 +147,11 @@
                     aria-expanded="false"
                 >&#9776;</button>
                 <div class="nav-links">
-                    <a href="index.html" data-page-link="home" data-i18n="common.nav.home"></a>
-                    <a href="services.html" data-page-link="services" data-i18n="common.nav.services"></a>
-                    <a href="business-case.html" data-page-link="business-case" data-i18n="common.nav.businessCase"></a>
-                    <a href="blog.html" data-page-link="blog" data-i18n="common.nav.blog"></a>
-                    <a href="contact.html" data-page-link="contact" data-i18n="common.nav.contact"></a>
+                    <a href="index.html" data-page-link="home" data-i18n="common.nav.home">Home</a>
+                    <a href="services.html" data-page-link="services" data-i18n="common.nav.services">Services</a>
+                    <a href="business-case.html" data-page-link="business-case" data-i18n="common.nav.businessCase">Business Case</a>
+                    <a href="blog.html" data-page-link="blog" data-i18n="common.nav.blog">Communications</a>
+                    <a href="contact.html" data-page-link="contact" data-i18n="common.nav.contact">Contact</a>
                 </div>
             </nav>
 
@@ -112,8 +162,8 @@
                 data-i18n-aria-label="common.languageSwitcher"
                 data-language-switcher
             >
-                <button type="button" class="language-option" data-language-option="en" data-i18n="common.language.en" aria-pressed="false"></button>
-                <button type="button" class="language-option" data-language-option="fr" data-i18n="common.language.fr" aria-pressed="false"></button>
+                <button type="button" class="language-option" data-language-option="en" data-i18n="common.language.en" aria-pressed="false">EN</button>
+                <button type="button" class="language-option" data-language-option="fr" data-i18n="common.language.fr" aria-pressed="false">FR</button>
             </div>
 
         </div>
@@ -123,41 +173,41 @@
         <section class="hero">
             <div class="container hero-grid">
                 <article class="hero-content" data-reveal>
-                    <span class="eyebrow" data-i18n="business.hero.eyebrow"></span>
-                    <h1 data-i18n="business.hero.title"></h1>
-                    <p class="lead" data-i18n="business.hero.lead"></p>
+                    <span class="eyebrow" data-i18n="business.hero.eyebrow">Decision Page for Directors</span>
+                    <h1 data-i18n="business.hero.title">Understand Why Cybersecurity Is a Business Decision, Not an IT Expense</h1>
+                    <p class="lead" data-i18n="business.hero.lead">This page gives you a clear decision framework: where risk sits, what one incident can cost, and how to justify a first contract scope.</p>
                     <div class="hero-actions">
-                        <a class="button button-primary" href="contact.html?intent=health-check" data-i18n="common.cta.healthCheck"></a>
-                        <a class="button button-ghost" href="services.html" data-i18n="business.hero.secondaryCta"></a>
+                        <a class="button button-primary" href="contact.html?intent=health-check" data-i18n="common.cta.healthCheck">Request a Proposal</a>
+                        <a class="button button-ghost" href="services.html" data-i18n="business.hero.secondaryCta">Review Services</a>
                     </div>
                     <div class="stat-list">
                         <div class="stat">
-                            <strong data-i18n="business.hero.stat1.value"></strong>
-                            <span data-i18n="business.hero.stat1.label"></span>
+                            <strong data-i18n="business.hero.stat1.value">Clarity</strong>
+                            <span data-i18n="business.hero.stat1.label">See exposure in business terms</span>
                         </div>
                         <div class="stat">
-                            <strong data-i18n="business.hero.stat2.value"></strong>
-                            <span data-i18n="business.hero.stat2.label"></span>
+                            <strong data-i18n="business.hero.stat2.value">ROI</strong>
+                            <span data-i18n="business.hero.stat2.label">Estimate avoidable financial impact</span>
                         </div>
                         <div class="stat">
-                            <strong data-i18n="business.hero.stat3.value"></strong>
-                            <span data-i18n="business.hero.stat3.label"></span>
+                            <strong data-i18n="business.hero.stat3.value">Action</strong>
+                            <span data-i18n="business.hero.stat3.label">Decide a right-sized first scope</span>
                         </div>
                     </div>
                 </article>
 
                 <aside class="hero-panel" data-reveal>
                     <article class="panel-card">
-                        <h2 data-i18n="business.hero.panel1.title"></h2>
-                        <p data-i18n="business.hero.panel1.text"></p>
+                        <h2 data-i18n="business.hero.panel1.title">Risk You Can Explain</h2>
+                        <p data-i18n="business.hero.panel1.text">Translate technical threats into continuity, cash-flow, and client trust impact.</p>
                     </article>
                     <article class="panel-card">
-                        <h2 data-i18n="business.hero.panel2.title"></h2>
-                        <p data-i18n="business.hero.panel2.text"></p>
+                        <h2 data-i18n="business.hero.panel2.title">Numbers You Can Defend</h2>
+                        <p data-i18n="business.hero.panel2.text">Use simple scenarios to quantify downtime and remediation exposure.</p>
                     </article>
                     <article class="panel-card">
-                        <h2 data-i18n="business.hero.panel3.title"></h2>
-                        <p data-i18n="business.hero.panel3.text"></p>
+                        <h2 data-i18n="business.hero.panel3.title">Contract Scope You Can Control</h2>
+                        <p data-i18n="business.hero.panel3.text">Start small on critical assets and expand only when value is measured.</p>
                     </article>
                 </aside>
             </div>
@@ -167,24 +217,24 @@
             <div class="container">
                 <div class="section-head" data-reveal>
                     <div>
-                        <span class="pill" data-i18n="home.xThreats.pill"></span>
-                        <h2 data-i18n="home.xThreats.title"></h2>
+                        <span class="pill" data-i18n="home.xThreats.pill">Physical vs Digital Security</span>
+                        <h2 data-i18n="home.xThreats.title">Your Business Has Two Sites to Protect: Physical and Digital</h2>
                     </div>
-                    <p data-i18n="home.xThreats.text"></p>
+                    <p data-i18n="home.xThreats.text">Directors rarely leave a storefront unlocked overnight. The same discipline must apply to endpoints, accounts, and cloud workspaces.</p>
                 </div>
 
                 <div class="card-grid three x-threat-grid">
                     <article class="content-card" data-reveal>
-                        <h3 data-i18n="home.xThreats.card1.title"></h3>
-                        <p data-i18n="home.xThreats.card1.text"></p>
+                        <h3 data-i18n="home.xThreats.card1.title">Locked doors in real life = protected endpoints online</h3>
+                        <p data-i18n="home.xThreats.card1.text">A phishing message can steal credentials and open digital doors just like a stolen key opens a physical office.</p>
                     </article>
                     <article class="content-card" data-reveal>
-                        <h3 data-i18n="home.xThreats.card2.title"></h3>
-                        <p data-i18n="home.xThreats.card2.text"></p>
+                        <h3 data-i18n="home.xThreats.card2.title">Locked cabinets in real life = protected SaaS data</h3>
+                        <p data-i18n="home.xThreats.card2.text">Ransomware can encrypt files in shared drives and business platforms, freezing invoicing, operations, and delivery.</p>
                     </article>
                     <article class="content-card" data-reveal>
-                        <h3 data-i18n="home.xThreats.card3.title"></h3>
-                        <p data-i18n="home.xThreats.card3.text"></p>
+                        <h3 data-i18n="home.xThreats.card3.title">Night guard in real life = monitored detection online</h3>
+                        <p data-i18n="home.xThreats.card3.text">Continuous monitoring catches suspicious movement early so incidents are contained before they become business crises.</p>
                     </article>
                 </div>
             </div>
@@ -194,27 +244,27 @@
             <div class="container">
                 <div class="section-head" data-reveal>
                     <div>
-                        <span class="pill" data-i18n="home.roi.pill"></span>
-                        <h2 data-i18n="home.roi.title"></h2>
+                        <span class="pill" data-i18n="home.roi.pill">ROI Visibility</span>
+                        <h2 data-i18n="home.roi.title">How DPaX Creates Measurable Business Value</h2>
                     </div>
-                    <p data-i18n="home.roi.text"></p>
+                    <p data-i18n="home.roi.text">We estimate gains with your own numbers: hourly operating value, incident handling cost, and revenue at risk.</p>
                 </div>
 
                 <div class="card-grid three">
                     <article class="content-card" data-reveal>
-                        <h3 data-i18n="home.roi.card1.title"></h3>
-                        <p data-i18n="home.roi.card1.text"></p>
-                        <p class="case-outcome" data-i18n="home.roi.card1.metric"></p>
+                        <h3 data-i18n="home.roi.card1.title">Reduced downtime cost</h3>
+                        <p data-i18n="home.roi.card1.text">Earlier detection and containment helps avoid long interruptions in invoicing, production, and delivery.</p>
+                        <p class="case-outcome" data-i18n="home.roi.card1.metric">Financial lens: avoided downtime hours x your hourly operating value.</p>
                     </article>
                     <article class="content-card" data-reveal>
-                        <h3 data-i18n="home.roi.card2.title"></h3>
-                        <p data-i18n="home.roi.card2.text"></p>
-                        <p class="case-outcome" data-i18n="home.roi.card2.metric"></p>
+                        <h3 data-i18n="home.roi.card2.title">Lower incident workload cost</h3>
+                        <p data-i18n="home.roi.card2.text">Better triage reduces false alarms and frees your internal IT team for planned work.</p>
+                        <p class="case-outcome" data-i18n="home.roi.card2.metric">Financial lens: analyst and IT hours saved per month.</p>
                     </article>
                     <article class="content-card" data-reveal>
-                        <h3 data-i18n="home.roi.card3.title"></h3>
-                        <p data-i18n="home.roi.card3.text"></p>
-                        <p class="case-outcome" data-i18n="home.roi.card3.metric"></p>
+                        <h3 data-i18n="home.roi.card3.title">Protected trust and contract value</h3>
+                        <p data-i18n="home.roi.card3.text">Preventing visible incidents helps secure client retention, renewals, and due diligence outcomes.</p>
+                        <p class="case-outcome" data-i18n="home.roi.card3.metric">Financial lens: revenue protected in key accounts and tenders.</p>
                     </article>
                 </div>
             </div>
@@ -223,13 +273,13 @@
         <section class="section" id="roi-estimator">
             <div class="container split">
                 <article class="content-card" data-reveal>
-                    <span class="pill" data-i18n="home.estimator.pill"></span>
-                    <h3 data-i18n="home.estimator.title"></h3>
-                    <p data-i18n="home.estimator.text"></p>
+                    <span class="pill" data-i18n="home.estimator.pill">Interactive ROI</span>
+                    <h3 data-i18n="home.estimator.title">Estimate the Financial Impact of One Cyber Incident</h3>
+                    <p data-i18n="home.estimator.text">Enter your own values to visualize potential impact and avoided loss when detection and response improve.</p>
 
                     <form class="estimator-form" data-roi-estimator onsubmit="return false;">
                         <label class="estimator-field">
-                            <span data-i18n="home.estimator.input1.label"></span>
+                            <span data-i18n="home.estimator.input1.label">Hourly revenue or operating value (€)</span>
                             <input
                                 type="number"
                                 min="0"
@@ -239,22 +289,22 @@
                                 data-i18n-placeholder="home.estimator.input1.placeholder"
                                 inputmode="decimal"
                             >
-                            <small data-i18n="home.estimator.input1.help"></small>
+                            <small data-i18n="home.estimator.input1.help">Use an estimate of value generated or protected each hour of normal activity.</small>
                         </label>
 
                         <label class="estimator-field">
-                            <span data-i18n="home.estimator.input2.label"></span>
+                            <span data-i18n="home.estimator.input2.label">Incident use case</span>
                             <select data-roi-input="useCase">
                                 <option value="ransomware" data-i18n="home.estimator.useCase.ransomware">Ransomware (operations blocked)</option>
                                 <option value="phishing" data-i18n="home.estimator.useCase.phishing">Phishing account takeover</option>
                                 <option value="bec" data-i18n="home.estimator.useCase.bec">Business Email Compromise (BEC)</option>
                             </select>
-                            <small data-i18n="home.estimator.input2.help"></small>
+                            <small data-i18n="home.estimator.input2.help">Select a scenario. Downtime hours and recovery cost are hardcoded for this use case.</small>
                             <small data-roi-use-case-details></small>
                         </label>
 
                         <label class="estimator-field">
-                            <span data-i18n="home.estimator.input3.label"></span>
+                            <span data-i18n="home.estimator.input3.label">Estimated recovery and remediation cost (€)</span>
                             <input
                                 type="number"
                                 min="0"
@@ -265,7 +315,7 @@
                                 inputmode="decimal"
                                 readonly
                             >
-                            <small data-i18n="home.estimator.input3.help"></small>
+                            <small data-i18n="home.estimator.input3.help">Auto-filled from the selected use case.</small>
                         </label>
 
                         <input type="hidden" data-roi-input="incidentHours" value="24">
@@ -273,25 +323,25 @@
                 </article>
 
                 <article class="content-card content-card-vcenter" data-reveal>
-                    <h3 data-i18n="home.estimator.results.title"></h3>
-                    <p data-i18n="home.estimator.results.text"></p>
+                    <h3 data-i18n="home.estimator.results.title">Estimated Exposure</h3>
+                    <p data-i18n="home.estimator.results.text">This simplified model helps frame business impact before budgeting decisions.</p>
 
                     <div class="estimator-results">
                         <article class="estimator-result">
-                            <span class="estimator-result-label" data-i18n="home.estimator.results.total.label"></span>
+                            <span class="estimator-result-label" data-i18n="home.estimator.results.total.label">Estimated cost of one incident</span>
                             <strong data-roi-output="totalCost">€0</strong>
                         </article>
                         <article class="estimator-result">
-                            <span class="estimator-result-label" data-i18n="home.estimator.results.avoid30.label"></span>
+                            <span class="estimator-result-label" data-i18n="home.estimator.results.avoid30.label">Potentially avoided with 30% impact reduction</span>
                             <strong data-roi-output="avoid30">€0</strong>
                         </article>
                         <article class="estimator-result">
-                            <span class="estimator-result-label" data-i18n="home.estimator.results.avoid50.label"></span>
+                            <span class="estimator-result-label" data-i18n="home.estimator.results.avoid50.label">Potentially avoided with 50% impact reduction</span>
                             <strong data-roi-output="avoid50">€0</strong>
                         </article>
                     </div>
 
-                    <p class="disclaimer-text" data-i18n="home.estimator.disclaimer"></p>
+                    <p class="disclaimer-text" data-i18n="home.estimator.disclaimer">Planning estimate only. Actual losses depend on attack type, response speed, insurance coverage, and business context.</p>
                 </article>
             </div>
         </section>
@@ -300,28 +350,28 @@
             <div class="container">
                 <div class="section-head" data-reveal>
                     <div>
-                        <span class="pill" data-i18n="home.faq.pill"></span>
-                        <h2 data-i18n="home.faq.title"></h2>
+                        <span class="pill" data-i18n="home.faq.pill">Director FAQ</span>
+                        <h2 data-i18n="home.faq.title">Frequent Objections, Straight Answers</h2>
                     </div>
-                    <p data-i18n="home.faq.text"></p>
+                    <p data-i18n="home.faq.text">Clear answers for non-technical decision-makers before budget and vendor decisions.</p>
                 </div>
 
                 <div class="card-grid two">
                     <article class="content-card" data-reveal>
-                        <h3 data-i18n="home.faq.card1.q"></h3>
-                        <p data-i18n="home.faq.card1.a"></p>
+                        <h3 data-i18n="home.faq.card1.q">We are a small company. Are we really a target?</h3>
+                        <p data-i18n="home.faq.card1.a">Yes. Attackers often automate campaigns against SMEs because entry is easier and response resources are limited.</p>
                     </article>
                     <article class="content-card" data-reveal>
-                        <h3 data-i18n="home.faq.card2.q"></h3>
-                        <p data-i18n="home.faq.card2.a"></p>
+                        <h3 data-i18n="home.faq.card2.q">Will an MSSP replace our internal IT person?</h3>
+                        <p data-i18n="home.faq.card2.a">No. DPaX works in a co-managed model. Your internal IT keeps ownership of business systems while we add specialist detection and response capability.</p>
                     </article>
                     <article class="content-card" data-reveal>
-                        <h3 data-i18n="home.faq.card3.q"></h3>
-                        <p data-i18n="home.faq.card3.a"></p>
+                        <h3 data-i18n="home.faq.card3.q">Can we start with a controlled budget and contract scope?</h3>
+                        <p data-i18n="home.faq.card3.a">Yes. We define a right-sized first-phase contract for high-risk assets, then expand only when value is demonstrated.</p>
                     </article>
                     <article class="content-card" data-reveal>
-                        <h3 data-i18n="home.faq.card4.q"></h3>
-                        <p data-i18n="home.faq.card4.a"></p>
+                        <h3 data-i18n="home.faq.card4.q">What do SIEM, EDR, phishing, and ransomware mean in plain terms?</h3>
+                        <p data-i18n="home.faq.card4.a">SIEM is a central alert console, EDR watches each device, phishing steals credentials through fake messages, and ransomware encrypts data to stop activity.</p>
                     </article>
                 </div>
             </div>
@@ -330,13 +380,13 @@
         <section class="section" id="business-next-step">
             <div class="container split">
                 <article class="content-card" data-reveal>
-                    <h3 data-i18n="business.cta.title"></h3>
-                    <p data-i18n="business.cta.text"></p>
+                    <h3 data-i18n="business.cta.title">Ready to turn this into a concrete first step?</h3>
+                    <p data-i18n="business.cta.text">Book a 30-minute call and receive a right-sized first-phase proposal aligned with your risk priorities.</p>
                 </article>
                 <article class="content-card content-card-vcenter" data-reveal>
                     <div class="hero-actions">
-                        <a class="button button-primary" href="contact.html?intent=health-check" data-i18n="common.cta.healthCheck"></a>
-                        <a class="button button-ghost" href="contact.html?intent=roadmap-request" data-i18n="common.cta.roadmapRequest"></a>
+                        <a class="button button-primary" href="contact.html?intent=health-check" data-i18n="common.cta.healthCheck">Request a Proposal</a>
+                        <a class="button button-ghost" href="contact.html?intent=roadmap-request" data-i18n="common.cta.roadmapRequest">Get Contract Draft Scope</a>
                     </div>
                 </article>
             </div>
@@ -345,14 +395,14 @@
 
     <footer class="site-footer">
         <div class="container footer-inner">
-            <span>&copy; <span data-year></span><span data-i18n="common.footer.copy"></span></span>
+            <span>&copy; <span data-year></span><span data-i18n="common.footer.copy"> DPaX. Cybersecurity services for TPE/PME directors.</span></span>
             <div class="footer-links">
-                <a href="index.html" data-i18n="common.nav.home"></a>
-                <a href="services.html" data-i18n="common.nav.services"></a>
-                <a href="business-case.html" data-i18n="common.nav.businessCase"></a>
-                <a href="blog.html" data-i18n="common.nav.blog"></a>
-                <a href="contact.html" data-i18n="common.nav.contact"></a>
-                <a href="legal-notice.html" data-i18n="common.footer.legalNotice"></a>
+                <a href="index.html" data-i18n="common.nav.home">Home</a>
+                <a href="services.html" data-i18n="common.nav.services">Services</a>
+                <a href="business-case.html" data-i18n="common.nav.businessCase">Business Case</a>
+                <a href="blog.html" data-i18n="common.nav.blog">Communications</a>
+                <a href="contact.html" data-i18n="common.nav.contact">Contact</a>
+                <a href="legal-notice.html" data-i18n="common.footer.legalNotice">Legal &amp; Privacy</a>
                 <a class="footer-social-link" href="https://www.linkedin.com/company/dpax/" target="_blank" rel="noopener noreferrer" aria-label="DPaX on LinkedIn" data-i18n-aria-label="common.social.linkedin">
                     <svg viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M4.98 3.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM3 9h4v12H3zm7 0h3.83v1.64h.05C14.41 9.7 15.95 8.7 18.17 8.7c4.58 0 5.43 3.01 5.43 6.92V21h-4v-4.76c0-1.14-.02-2.6-1.58-2.6-1.59 0-1.83 1.24-1.83 2.52V21h-4z" />

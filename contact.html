@@ -3,6 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+    (() => {
+        const STORAGE_KEY = "dpax-language";
+        const URL_LANGUAGE_PARAM = "lang";
+        const DEFAULT_LANGUAGE = "en";
+        const SUPPORTED_LANGUAGES = new Set(["en", "fr"]);
+
+        const normalizeLanguage = (value) => {
+            if (!value) {
+                return DEFAULT_LANGUAGE;
+            }
+
+            const languageCode = String(value).toLowerCase().split("-")[0];
+            return SUPPORTED_LANGUAGES.has(languageCode) ? languageCode : DEFAULT_LANGUAGE;
+        };
+
+        const resolveInitialLanguage = () => {
+            try {
+                const urlLanguage = new URL(window.location.href).searchParams.get(URL_LANGUAGE_PARAM);
+                if (urlLanguage) {
+                    return normalizeLanguage(urlLanguage);
+                }
+            } catch (error) {
+                // Ignore URL parsing failures.
+            }
+
+            try {
+                const storedLanguage = localStorage.getItem(STORAGE_KEY);
+                if (storedLanguage) {
+                    return normalizeLanguage(storedLanguage);
+                }
+            } catch (error) {
+                // Ignore storage access failures.
+            }
+
+            if (Array.isArray(navigator.languages) && navigator.languages.length > 0) {
+                return normalizeLanguage(navigator.languages[0]);
+            }
+
+            return normalizeLanguage(navigator.language);
+        };
+
+        if (resolveInitialLanguage() !== DEFAULT_LANGUAGE) {
+            document.documentElement.classList.add("lang-initializing");
+            window.setTimeout(() => {
+                document.documentElement.classList.remove("lang-initializing");
+            }, 3000);
+        }
+    })();
+    </script>
     <meta
         name="description"
         content="Contact DPaX to discuss managed SOC operations, incident response needs, and penetration testing scope for your organization."
@@ -97,11 +147,11 @@
                     aria-expanded="false"
                 >&#9776;</button>
                 <div class="nav-links">
-                    <a href="index.html" data-page-link="home" data-i18n="common.nav.home"></a>
-                    <a href="services.html" data-page-link="services" data-i18n="common.nav.services"></a>
-                    <a href="business-case.html" data-page-link="business-case" data-i18n="common.nav.businessCase"></a>
-                    <a href="blog.html" data-page-link="blog" data-i18n="common.nav.blog"></a>
-                    <a href="contact.html" data-page-link="contact" data-i18n="common.nav.contact"></a>
+                    <a href="index.html" data-page-link="home" data-i18n="common.nav.home">Home</a>
+                    <a href="services.html" data-page-link="services" data-i18n="common.nav.services">Services</a>
+                    <a href="business-case.html" data-page-link="business-case" data-i18n="common.nav.businessCase">Business Case</a>
+                    <a href="blog.html" data-page-link="blog" data-i18n="common.nav.blog">Communications</a>
+                    <a href="contact.html" data-page-link="contact" data-i18n="common.nav.contact">Contact</a>
                 </div>
             </nav>
 
@@ -112,8 +162,8 @@
                 data-i18n-aria-label="common.languageSwitcher"
                 data-language-switcher
             >
-                <button type="button" class="language-option" data-language-option="en" data-i18n="common.language.en" aria-pressed="false"></button>
-                <button type="button" class="language-option" data-language-option="fr" data-i18n="common.language.fr" aria-pressed="false"></button>
+                <button type="button" class="language-option" data-language-option="en" data-i18n="common.language.en" aria-pressed="false">EN</button>
+                <button type="button" class="language-option" data-language-option="fr" data-i18n="common.language.fr" aria-pressed="false">FR</button>
             </div>
 
         </div>
@@ -123,41 +173,41 @@
         <section class="hero">
             <div class="container hero-grid">
                 <article class="hero-content" data-reveal>
-                    <span class="eyebrow" data-i18n="contact.hero.eyebrow"></span>
-                    <h1 data-i18n="contact.hero.title"></h1>
-                    <p class="lead" data-i18n="contact.hero.lead"></p>
+                    <span class="eyebrow" data-i18n="contact.hero.eyebrow">Contact DPaX</span>
+                    <h1 data-i18n="contact.hero.title">Speak to a Cybersecurity Expert Without Technical Jargon</h1>
+                    <p class="lead" data-i18n="contact.hero.lead">In one call, we identify where your digital doors and digital filing cabinets are exposed, then define the fastest first contract step to reduce risk.</p>
                     <div class="hero-actions">
-                        <a class="button button-primary" href="mailto:contact@dpax.fr?subject=Proposal%20Request" data-i18n="common.cta.healthCheck"></a>
-                        <a class="button button-ghost" href="mailto:contact@dpax.fr?subject=Contract%20Draft%20Scope%20Request" data-i18n="common.cta.roadmapRequest"></a>
+                        <a class="button button-primary" href="mailto:contact@dpax.fr?subject=Proposal%20Request" data-i18n="common.cta.healthCheck">Request a Proposal</a>
+                        <a class="button button-ghost" href="mailto:contact@dpax.fr?subject=Contract%20Draft%20Scope%20Request" data-i18n="common.cta.roadmapRequest">Get Contract Draft Scope</a>
                     </div>
                     <div class="stat-list">
                         <div class="stat">
-                            <strong data-i18n="contact.hero.stat1.value"></strong>
-                            <span data-i18n="contact.hero.stat1.label"></span>
+                            <strong data-i18n="contact.hero.stat1.value">30 min</strong>
+                            <span data-i18n="contact.hero.stat1.label">Initial risk call</span>
                         </div>
                         <div class="stat">
-                            <strong data-i18n="contact.hero.stat2.value"></strong>
-                            <span data-i18n="contact.hero.stat2.label"></span>
+                            <strong data-i18n="contact.hero.stat2.value">Plain language</strong>
+                            <span data-i18n="contact.hero.stat2.label">Built for non-technical directors</span>
                         </div>
                         <div class="stat">
-                            <strong data-i18n="contact.hero.stat3.value"></strong>
-                            <span data-i18n="contact.hero.stat3.label"></span>
+                            <strong data-i18n="contact.hero.stat3.value">Co-managed</strong>
+                            <span data-i18n="contact.hero.stat3.label">With your internal IT team</span>
                         </div>
                     </div>
                 </article>
 
                 <aside class="hero-panel" data-reveal>
                     <article class="panel-card">
-                        <h2 data-i18n="contact.hero.panel1.title"></h2>
-                        <p data-i18n="contact.hero.panel1.text"></p>
+                        <h2 data-i18n="contact.hero.panel1.title">Fast Risk Qualification</h2>
+                        <p data-i18n="contact.hero.panel1.text">We quickly identify priority risks: phishing, ransomware, exposed access, and monitoring gaps.</p>
                     </article>
                     <article class="panel-card">
-                        <h2 data-i18n="contact.hero.panel2.title"></h2>
-                        <p data-i18n="contact.hero.panel2.text"></p>
+                        <h2 data-i18n="contact.hero.panel2.title">Clear Next Step</h2>
+                        <p data-i18n="contact.hero.panel2.text">You leave with a recommended first action, expected effort, and realistic timeline.</p>
                     </article>
                     <article class="panel-card">
-                        <h2 data-i18n="contact.hero.panel3.title"></h2>
-                        <p data-i18n="contact.hero.panel3.text"></p>
+                        <h2 data-i18n="contact.hero.panel3.title">Your IT Team Keeps Its Role</h2>
+                        <p data-i18n="contact.hero.panel3.text">DPaX complements your in-house IT team. Responsibilities remain clear and collaborative.</p>
                     </article>
                 </aside>
             </div>
@@ -167,24 +217,24 @@
             <div class="container">
                 <div class="section-head" data-reveal>
                     <div>
-                        <span class="pill" data-i18n="contact.details.pill"></span>
-                        <h2 data-i18n="contact.details.title"></h2>
+                        <span class="pill" data-i18n="contact.details.pill">Get in Touch</span>
+                        <h2 data-i18n="contact.details.title">How to Reach DPaX</h2>
                     </div>
-                    <p data-i18n="contact.details.text"></p>
+                    <p data-i18n="contact.details.text">Share your context and objectives. We respond with the right entry point, scope, and contract model.</p>
                 </div>
 
                 <div class="contact-grid">
                     <article class="contact-item" data-reveal>
-                        <strong data-i18n="contact.details.emailLabel"></strong>
-                        <a href="mailto:contact@dpax.fr" data-i18n="contact.details.emailValue"></a>
+                        <strong data-i18n="contact.details.emailLabel">Email</strong>
+                        <a href="mailto:contact@dpax.fr" data-i18n="contact.details.emailValue">contact@dpax.fr</a>
                     </article>
                     <article class="contact-item" data-reveal>
-                        <strong data-i18n="contact.details.coverageLabel"></strong>
-                        <span data-i18n="contact.details.coverageText"></span>
+                        <strong data-i18n="contact.details.coverageLabel">Coverage</strong>
+                        <span data-i18n="contact.details.coverageText">Managed MSSP monitoring, incident response support, and manual pentest services for TPE/PME.</span>
                     </article>
                     <article class="contact-item" data-reveal>
-                        <strong data-i18n="contact.details.contractLabel"></strong>
-                        <span data-i18n="contact.details.contractText"></span>
+                        <strong data-i18n="contact.details.contractLabel">Contract model</strong>
+                        <span data-i18n="contact.details.contractText">Start with a right-sized scope: monthly MSSP, pentest project, or phased hybrid plan.</span>
                     </article>
                 </div>
             </div>
@@ -205,13 +255,13 @@
                     </picture>
                 </figure>
                 <article class="content-card profile-copy" data-reveal>
-                    <span class="pill" data-i18n="contact.profile.pill"></span>
-                    <h3 data-i18n="contact.profile.title"></h3>
-                    <p data-i18n="contact.profile.text"></p>
+                    <span class="pill" data-i18n="contact.profile.pill">Your Expert Contact</span>
+                    <h3 data-i18n="contact.profile.title">Work Directly With the Practitioner Who Runs the Mission</h3>
+                    <p data-i18n="contact.profile.text">No sales relay and no handoff confusion. You speak with the same senior expert who scopes, executes, and follows remediation.</p>
                     <ul class="bullet-list">
-                        <li data-i18n="contact.profile.point1"></li>
-                        <li data-i18n="contact.profile.point2"></li>
-                        <li data-i18n="contact.profile.point3"></li>
+                        <li data-i18n="contact.profile.point1">Business-first explanations, technical depth when needed</li>
+                        <li data-i18n="contact.profile.point2">Collaboration with your internal IT, not replacement</li>
+                        <li data-i18n="contact.profile.point3">Continuity from first call to measurable outcomes</li>
                     </ul>
                 </article>
             </div>
@@ -220,14 +270,14 @@
 
     <footer class="site-footer">
         <div class="container footer-inner">
-            <span>&copy; <span data-year></span><span data-i18n="common.footer.copy"></span></span>
+            <span>&copy; <span data-year></span><span data-i18n="common.footer.copy"> DPaX. Cybersecurity services for TPE/PME directors.</span></span>
             <div class="footer-links">
-                <a href="index.html" data-i18n="common.nav.home"></a>
-                <a href="services.html" data-i18n="common.nav.services"></a>
-                <a href="business-case.html" data-i18n="common.nav.businessCase"></a>
-                <a href="blog.html" data-i18n="common.nav.blog"></a>
-                <a href="contact.html" data-i18n="common.nav.contact"></a>
-                <a href="legal-notice.html" data-i18n="common.footer.legalNotice"></a>
+                <a href="index.html" data-i18n="common.nav.home">Home</a>
+                <a href="services.html" data-i18n="common.nav.services">Services</a>
+                <a href="business-case.html" data-i18n="common.nav.businessCase">Business Case</a>
+                <a href="blog.html" data-i18n="common.nav.blog">Communications</a>
+                <a href="contact.html" data-i18n="common.nav.contact">Contact</a>
+                <a href="legal-notice.html" data-i18n="common.footer.legalNotice">Legal &amp; Privacy</a>
                 <a class="footer-social-link" href="https://www.linkedin.com/company/dpax/" target="_blank" rel="noopener noreferrer" aria-label="DPaX on LinkedIn" data-i18n-aria-label="common.social.linkedin">
                     <svg viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M4.98 3.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM3 9h4v12H3zm7 0h3.83v1.64h.05C14.41 9.7 15.95 8.7 18.17 8.7c4.58 0 5.43 3.01 5.43 6.92V21h-4v-4.76c0-1.14-.02-2.6-1.58-2.6-1.59 0-1.83 1.24-1.83 2.52V21h-4z" />

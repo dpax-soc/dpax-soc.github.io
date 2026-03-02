@@ -3,6 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+    (() => {
+        const STORAGE_KEY = "dpax-language";
+        const URL_LANGUAGE_PARAM = "lang";
+        const DEFAULT_LANGUAGE = "en";
+        const SUPPORTED_LANGUAGES = new Set(["en", "fr"]);
+
+        const normalizeLanguage = (value) => {
+            if (!value) {
+                return DEFAULT_LANGUAGE;
+            }
+
+            const languageCode = String(value).toLowerCase().split("-")[0];
+            return SUPPORTED_LANGUAGES.has(languageCode) ? languageCode : DEFAULT_LANGUAGE;
+        };
+
+        const resolveInitialLanguage = () => {
+            try {
+                const urlLanguage = new URL(window.location.href).searchParams.get(URL_LANGUAGE_PARAM);
+                if (urlLanguage) {
+                    return normalizeLanguage(urlLanguage);
+                }
+            } catch (error) {
+                // Ignore URL parsing failures.
+            }
+
+            try {
+                const storedLanguage = localStorage.getItem(STORAGE_KEY);
+                if (storedLanguage) {
+                    return normalizeLanguage(storedLanguage);
+                }
+            } catch (error) {
+                // Ignore storage access failures.
+            }
+
+            if (Array.isArray(navigator.languages) && navigator.languages.length > 0) {
+                return normalizeLanguage(navigator.languages[0]);
+            }
+
+            return normalizeLanguage(navigator.language);
+        };
+
+        if (resolveInitialLanguage() !== DEFAULT_LANGUAGE) {
+            document.documentElement.classList.add("lang-initializing");
+            window.setTimeout(() => {
+                document.documentElement.classList.remove("lang-initializing");
+            }, 3000);
+        }
+    })();
+    </script>
     <meta
         name="description"
         content="DPaX helps SMEs reduce cyber risk with managed monitoring, incident response support, and manual pentest validation."
@@ -128,11 +178,11 @@
                     aria-expanded="false"
                 >&#9776;</button>
                 <div class="nav-links">
-                    <a href="index.html" data-page-link="home" data-i18n="common.nav.home"></a>
-                    <a href="services.html" data-page-link="services" data-i18n="common.nav.services"></a>
-                    <a href="business-case.html" data-page-link="business-case" data-i18n="common.nav.businessCase"></a>
-                    <a href="blog.html" data-page-link="blog" data-i18n="common.nav.blog"></a>
-                    <a href="contact.html" data-page-link="contact" data-i18n="common.nav.contact"></a>
+                    <a href="index.html" data-page-link="home" data-i18n="common.nav.home">Home</a>
+                    <a href="services.html" data-page-link="services" data-i18n="common.nav.services">Services</a>
+                    <a href="business-case.html" data-page-link="business-case" data-i18n="common.nav.businessCase">Business Case</a>
+                    <a href="blog.html" data-page-link="blog" data-i18n="common.nav.blog">Communications</a>
+                    <a href="contact.html" data-page-link="contact" data-i18n="common.nav.contact">Contact</a>
                 </div>
             </nav>
 
@@ -143,8 +193,8 @@
                 data-i18n-aria-label="common.languageSwitcher"
                 data-language-switcher
             >
-                <button type="button" class="language-option" data-language-option="en" data-i18n="common.language.en" aria-pressed="false"></button>
-                <button type="button" class="language-option" data-language-option="fr" data-i18n="common.language.fr" aria-pressed="false"></button>
+                <button type="button" class="language-option" data-language-option="en" data-i18n="common.language.en" aria-pressed="false">EN</button>
+                <button type="button" class="language-option" data-language-option="fr" data-i18n="common.language.fr" aria-pressed="false">FR</button>
             </div>
 
         </div>
@@ -154,42 +204,42 @@
         <section class="hero">
             <div class="container hero-grid">
                 <article class="hero-content" data-reveal>
-                    <span class="eyebrow" data-i18n="home.hero.eyebrow"></span>
-                    <h1 data-i18n="home.hero.title"></h1>
-                    <p class="lead" data-i18n="home.hero.lead"></p>
+                    <span class="eyebrow" data-i18n="home.hero.eyebrow">Physical Security Logic for Digital Risk</span>
+                    <h1 data-i18n="home.hero.title">If You Lock Your Office, Lock Your Digital Office Too.</h1>
+                    <p class="lead" data-i18n="home.hero.lead">You already protect your building with doors, keys, alarms, and procedures. Your business now has a second building: computers, user accounts, and SaaS apps. DPaX helps you protect that digital building before incidents block operations.</p>
                     <div class="hero-actions">
-                        <a class="button button-primary" href="contact.html?intent=health-check" data-i18n="common.cta.healthCheck"></a>
-                        <a class="button button-ghost" href="contact.html?intent=roadmap-request" data-i18n="common.cta.roadmapRequest"></a>
+                        <a class="button button-primary" href="contact.html?intent=health-check" data-i18n="common.cta.healthCheck">Request a Proposal</a>
+                        <a class="button button-ghost" href="contact.html?intent=roadmap-request" data-i18n="common.cta.roadmapRequest">Get Contract Draft Scope</a>
                     </div>
                     <div class="stat-list">
                         <div class="stat">
-                            <strong data-i18n="home.hero.stat1.value"></strong>
-                            <span data-i18n="home.hero.stat1.label"></span>
+                            <strong data-i18n="home.hero.stat1.value">Continuity</strong>
+                            <span data-i18n="home.hero.stat1.label">Protect operations, invoicing, and production</span>
                         </div>
                         <div class="stat">
-                            <strong data-i18n="home.hero.stat2.value"></strong>
-                            <span data-i18n="home.hero.stat2.label"></span>
+                            <strong data-i18n="home.hero.stat2.value">Trust</strong>
+                            <span data-i18n="home.hero.stat2.label">Protect client and partner confidence</span>
                         </div>
                         <div class="stat">
-                            <strong data-i18n="home.hero.stat3.value"></strong>
-                            <span data-i18n="home.hero.stat3.label"></span>
+                            <strong data-i18n="home.hero.stat3.value">Control</strong>
+                            <span data-i18n="home.hero.stat3.label">Make faster decisions during incidents</span>
                         </div>
                     </div>
-                    <p class="targets-disclaimer" data-i18n="common.disclaimer.targets"></p>
+                    <p class="targets-disclaimer" data-i18n="common.disclaimer.targets">Examples and response targets depend on your scope and tooling. Final commitments are defined in each engagement agreement.</p>
                 </article>
 
                 <aside class="hero-panel" data-reveal>
                     <article class="panel-card">
-                        <h2 data-i18n="home.hero.panel1.title"></h2>
-                        <p data-i18n="home.hero.panel1.text"></p>
+                        <h2 data-i18n="home.hero.panel1.title">What You Already Do Physically</h2>
+                        <p data-i18n="home.hero.panel1.text">You lock doors, control keys, and protect confidential files because theft and disruption are real business risks.</p>
                     </article>
                     <article class="panel-card">
-                        <h2 data-i18n="home.hero.panel2.title"></h2>
-                        <p data-i18n="home.hero.panel2.text"></p>
+                        <h2 data-i18n="home.hero.panel2.title">What Is Often Exposed Digitally</h2>
+                        <p data-i18n="home.hero.panel2.text">Workstations and servers are digital doors. SaaS apps are digital filing cabinets. Without active protection, both can be opened by attackers.</p>
                     </article>
                     <article class="panel-card">
-                        <h2 data-i18n="home.hero.panel3.title"></h2>
-                        <p data-i18n="home.hero.panel3.text"></p>
+                        <h2 data-i18n="home.hero.panel3.title">How DPaX Mirrors Physical Security</h2>
+                        <p data-i18n="home.hero.panel3.text">Pentest acts like a friendly burglar testing weak locks. MSSP acts like 24/7 alarms and guards for endpoints, accounts, and SaaS activity.</p>
                     </article>
                 </aside>
             </div>
@@ -209,7 +259,7 @@
                         >
                     </picture>
                     <div class="feature-banner-overlay">
-                        <h2 data-i18n="home.banner.title"></h2>
+                        <h2 data-i18n="home.banner.title">Cybersecurity is business continuity, not just IT.</h2>
                     </div>
                 </article>
             </div>
@@ -218,22 +268,22 @@
         <section class="section" id="business-case-teaser">
             <div class="container split">
                 <article class="content-card" data-reveal>
-                    <span class="pill" data-i18n="home.businessCase.pill"></span>
-                    <h2 data-i18n="home.businessCase.title"></h2>
-                    <p data-i18n="home.businessCase.text"></p>
+                    <span class="pill" data-i18n="home.businessCase.pill">Director Business Case</span>
+                    <h2 data-i18n="home.businessCase.title">Need the Full Business Justification Before You Decide?</h2>
+                    <p data-i18n="home.businessCase.text">Use our dedicated decision page to evaluate exposure and budget impact before contract discussions.</p>
                     <ul class="bullet-list">
-                        <li data-i18n="home.businessCase.point1"></li>
-                        <li data-i18n="home.businessCase.point2"></li>
-                        <li data-i18n="home.businessCase.point3"></li>
+                        <li data-i18n="home.businessCase.point1">Physical vs digital risk mapping in plain language</li>
+                        <li data-i18n="home.businessCase.point2">ROI framing and interactive incident cost estimator</li>
+                        <li data-i18n="home.businessCase.point3">Objection handling for budget and internal IT alignment</li>
                     </ul>
                 </article>
 
                 <article class="content-card content-card-vcenter" data-reveal>
-                    <h3 data-i18n="home.businessCase.ctaTitle"></h3>
-                    <p data-i18n="home.businessCase.ctaText"></p>
+                    <h3 data-i18n="home.businessCase.ctaTitle">One Page for Budget, Risk, and Action</h3>
+                    <p data-i18n="home.businessCase.ctaText">Designed for non-technical directors who need clear justification, not technical noise.</p>
                     <div class="hero-actions">
-                        <a class="button button-primary" href="business-case.html" data-i18n="home.businessCase.primaryCta"></a>
-                        <a class="button button-ghost" href="contact.html?intent=health-check" data-i18n="common.cta.healthCheck"></a>
+                        <a class="button button-primary" href="business-case.html" data-i18n="home.businessCase.primaryCta">Open Business Case</a>
+                        <a class="button button-ghost" href="contact.html?intent=health-check" data-i18n="common.cta.healthCheck">Request a Proposal</a>
                     </div>
                 </article>
             </div>
@@ -243,35 +293,35 @@
             <div class="container">
                 <div class="section-head" data-reveal>
                     <div>
-                        <span class="pill" data-i18n="home.servicesOverview.pill"></span>
-                        <h2 data-i18n="home.servicesOverview.title"></h2>
+                        <span class="pill" data-i18n="home.servicesOverview.pill">How We Protect You</span>
+                        <h2 data-i18n="home.servicesOverview.title">Two Services, One Goal: Keep Your Business Running</h2>
                     </div>
-                    <p data-i18n="home.servicesOverview.text"></p>
+                    <p data-i18n="home.servicesOverview.text">DPaX combines continuous defense (MSSP) and controlled attack simulation (Pentest) so you can justify a clear protection contract to leadership and finance.</p>
                 </div>
 
                 <div class="card-grid two">
                     <article class="service-card soc" data-reveal>
-                        <span class="tag soc" data-i18n="home.socCard.tag"></span>
-                        <h3 data-i18n="home.socCard.title"></h3>
-                        <p data-i18n="home.socCard.text"></p>
+                        <span class="tag soc" data-i18n="home.socCard.tag">SOC Services</span>
+                        <h3 data-i18n="home.socCard.title">SOC: Daily Protection and Fast Response</h3>
+                        <p data-i18n="home.socCard.text">Like digital guards and alarms, we monitor alerts, validate real threats, and guide your team during incidents.</p>
                         <ul class="bullet-list">
-                            <li data-i18n="home.socCard.point1"></li>
-                            <li data-i18n="home.socCard.point2"></li>
-                            <li data-i18n="home.socCard.point3"></li>
+                            <li data-i18n="home.socCard.point1">24/7 monitoring and alert triage</li>
+                            <li data-i18n="home.socCard.point2">SIEM/XDR tuning (your security control room)</li>
+                            <li data-i18n="home.socCard.point3">Containment guidance and follow-up actions</li>
                         </ul>
-                        <a class="button button-ghost button-inline" href="services.html#soc-services" data-i18n="home.socCard.cta"></a>
+                        <a class="button button-ghost button-inline" href="services.html#soc-services" data-i18n="home.socCard.cta">View SOC Services</a>
                     </article>
 
                     <article class="service-card pentest" data-reveal>
-                        <span class="tag pentest" data-i18n="home.pentestCard.tag"></span>
-                        <h3 data-i18n="home.pentestCard.title"></h3>
-                        <p data-i18n="home.pentestCard.text"></p>
+                        <span class="tag pentest" data-i18n="home.pentestCard.tag">Pentest Services</span>
+                        <h3 data-i18n="home.pentestCard.title">Pentest: Find Real Weaknesses Before Attackers</h3>
+                        <p data-i18n="home.pentestCard.text">Like an authorized friendly burglar, we test realistic attack paths and show exactly which locks to reinforce first.</p>
                         <ul class="bullet-list">
-                            <li data-i18n="home.pentestCard.point1"></li>
-                            <li data-i18n="home.pentestCard.point2"></li>
-                            <li data-i18n="home.pentestCard.point3"></li>
+                            <li data-i18n="home.pentestCard.point1">Web and API attack-path testing</li>
+                            <li data-i18n="home.pentestCard.point2">Internal network and Active Directory testing</li>
+                            <li data-i18n="home.pentestCard.point3">Executive summary plus technical fix plan</li>
                         </ul>
-                        <a class="button button-ghost button-inline" href="services.html#pentest-services" data-i18n="home.pentestCard.cta"></a>
+                        <a class="button button-ghost button-inline" href="services.html#pentest-services" data-i18n="home.pentestCard.cta">View Pentest Services</a>
                     </article>
                 </div>
             </div>
@@ -280,22 +330,22 @@
         <section class="section">
             <div class="container split">
                 <article class="content-card" data-reveal>
-                    <h3 data-i18n="home.workflow.title"></h3>
-                    <p data-i18n="home.workflow.text"></p>
+                    <h3 data-i18n="home.workflow.title">What Happens When You Work With DPaX</h3>
+                    <p data-i18n="home.workflow.text">No heavy process and no black box. We move from uncertainty to a contract-backed protection plan in clear steps.</p>
                     <ul class="bullet-list">
-                        <li data-i18n="home.workflow.point1"></li>
-                        <li data-i18n="home.workflow.point2"></li>
-                        <li data-i18n="home.workflow.point3"></li>
+                        <li data-i18n="home.workflow.point1">Assess current exposure and business priorities</li>
+                        <li data-i18n="home.workflow.point2">Define scope, cadence, and responsibilities</li>
+                        <li data-i18n="home.workflow.point3">Deliver a prioritized action plan and verify progress</li>
                     </ul>
                 </article>
 
                 <article class="content-card" data-reveal>
-                    <h3 data-i18n="home.why.title"></h3>
-                    <p data-i18n="home.why.text"></p>
+                    <h3 data-i18n="home.why.title">Why Directors Choose DPaX</h3>
+                    <p data-i18n="home.why.text">You need decisions, not noise. We translate technical risk into business impact and practical actions.</p>
                     <ul class="bullet-list">
-                        <li data-i18n="home.why.point1"></li>
-                        <li data-i18n="home.why.point2"></li>
-                        <li data-i18n="home.why.point3"></li>
+                        <li data-i18n="home.why.point1">Clear communication for non-technical leadership</li>
+                        <li data-i18n="home.why.point2">Co-managed model with your internal IT team</li>
+                        <li data-i18n="home.why.point3">One accountable partner from detection to remediation and contract follow-through</li>
                     </ul>
                 </article>
             </div>
@@ -304,35 +354,35 @@
         <section class="section" id="start-here">
             <div class="container split">
                 <article class="content-card" data-reveal>
-                    <h3 data-i18n="home.start.title"></h3>
-                    <p data-i18n="home.start.text"></p>
+                    <h3 data-i18n="home.start.title">Start Here in 3 Steps</h3>
+                    <p data-i18n="home.start.text">A simple path from uncertainty to a funded action plan.</p>
                     <div class="timeline">
                         <div class="timeline-step">
-                            <strong data-i18n="home.start.step1.title"></strong>
-                            <p data-i18n="home.start.step1.text"></p>
+                            <strong data-i18n="home.start.step1.title">1. Book the 30-minute risk call</strong>
+                            <p data-i18n="home.start.step1.text">We review your context, critical operations, and current pain points.</p>
                         </div>
                         <div class="timeline-step">
-                            <strong data-i18n="home.start.step2.title"></strong>
-                            <p data-i18n="home.start.step2.text"></p>
+                            <strong data-i18n="home.start.step2.title">2. Receive priority mapping</strong>
+                            <p data-i18n="home.start.step2.text">You get a first view of top risks, quick wins, and recommended service scope.</p>
                         </div>
                         <div class="timeline-step">
-                            <strong data-i18n="home.start.step3.title"></strong>
-                            <p data-i18n="home.start.step3.text"></p>
+                            <strong data-i18n="home.start.step3.title">3. Launch a right-sized contract phase</strong>
+                            <p data-i18n="home.start.step3.text">Start with highest-impact controls under a clear scope, measurable outcomes, and transparent follow-up.</p>
                         </div>
                     </div>
                 </article>
 
                 <article class="content-card content-card-vcenter" data-reveal>
-                    <h3 data-i18n="home.start.outcomeTitle"></h3>
-                    <p data-i18n="home.start.outcomeText"></p>
+                    <h3 data-i18n="home.start.outcomeTitle">What you get after the first exchange</h3>
+                    <p data-i18n="home.start.outcomeText">You leave with clarity on what to do, in which order, and with which expected business impact.</p>
                     <ul class="bullet-list">
-                        <li data-i18n="home.start.point1"></li>
-                        <li data-i18n="home.start.point2"></li>
-                        <li data-i18n="home.start.point3"></li>
+                        <li data-i18n="home.start.point1">A decision-ready summary for leadership</li>
+                        <li data-i18n="home.start.point2">A practical action path for internal IT</li>
+                        <li data-i18n="home.start.point3">A phased scope aligned to your budget</li>
                     </ul>
                     <div class="hero-actions">
-                        <a class="button button-primary" href="contact.html?intent=health-check" data-i18n="common.cta.healthCheck"></a>
-                        <a class="button button-ghost" href="contact.html?intent=roadmap-request" data-i18n="common.cta.roadmapRequest"></a>
+                        <a class="button button-primary" href="contact.html?intent=health-check" data-i18n="common.cta.healthCheck">Request a Proposal</a>
+                        <a class="button button-ghost" href="contact.html?intent=roadmap-request" data-i18n="common.cta.roadmapRequest">Get Contract Draft Scope</a>
                     </div>
                 </article>
             </div>
@@ -342,30 +392,30 @@
             <div class="container">
                 <div class="section-head" data-reveal>
                     <div>
-                        <span class="pill" data-i18n="home.trustOverview.pill"></span>
-                        <h2 data-i18n="home.trustOverview.title"></h2>
+                        <span class="pill" data-i18n="home.trustOverview.pill">Proof and Governance</span>
+                        <h2 data-i18n="home.trustOverview.title">Need More Evidence Before You Decide?</h2>
                     </div>
-                    <p data-i18n="home.trustOverview.text"></p>
+                    <p data-i18n="home.trustOverview.text">Review our trust and compliance approach: method transparency, platform coverage, and anonymized outcomes.</p>
                 </div>
 
                 <div class="card-grid three">
                     <article class="content-card" data-reveal>
-                        <h3 data-i18n="home.trustOverview.card1.title"></h3>
-                        <p data-i18n="home.trustOverview.card1.text"></p>
+                        <h3 data-i18n="home.trustOverview.card1.title">Threat-to-business framing</h3>
+                        <p data-i18n="home.trustOverview.card1.text">How we convert technical events into business-level priorities.</p>
                     </article>
                     <article class="content-card" data-reveal>
-                        <h3 data-i18n="home.trustOverview.card2.title"></h3>
-                        <p data-i18n="home.trustOverview.card2.text"></p>
+                        <h3 data-i18n="home.trustOverview.card2.title">Compliance-ready operations</h3>
+                        <p data-i18n="home.trustOverview.card2.text">How we support NIS2, DORA, and GDPR readiness without overcomplication.</p>
                     </article>
                     <article class="content-card" data-reveal>
-                        <h3 data-i18n="home.trustOverview.card3.title"></h3>
-                        <p data-i18n="home.trustOverview.card3.text"></p>
+                        <h3 data-i18n="home.trustOverview.card3.title">Realistic SME outcomes</h3>
+                        <p data-i18n="home.trustOverview.card3.text">How anonymized cases show measurable prevention and response progress.</p>
                     </article>
                 </div>
 
                 <div class="hero-actions" data-reveal>
-                    <a class="button button-primary" href="trust-compliance.html" data-i18n="home.trustOverview.primaryCta"></a>
-                    <a class="button button-ghost" href="contact.html?intent=health-check" data-i18n="common.cta.healthCheck"></a>
+                    <a class="button button-primary" href="trust-compliance.html" data-i18n="home.trustOverview.primaryCta">View Trust and Governance</a>
+                    <a class="button button-ghost" href="contact.html?intent=health-check" data-i18n="common.cta.healthCheck">Request a Proposal</a>
                 </div>
             </div>
         </section>
@@ -374,14 +424,14 @@
 
     <footer class="site-footer">
         <div class="container footer-inner">
-            <span>&copy; <span data-year></span><span data-i18n="common.footer.copy"></span></span>
+            <span>&copy; <span data-year></span><span data-i18n="common.footer.copy"> DPaX. Cybersecurity services for TPE/PME directors.</span></span>
             <div class="footer-links">
-                <a href="index.html" data-i18n="common.nav.home"></a>
-                <a href="services.html" data-i18n="common.nav.services"></a>
-                <a href="business-case.html" data-i18n="common.nav.businessCase"></a>
-                <a href="blog.html" data-i18n="common.nav.blog"></a>
-                <a href="contact.html" data-i18n="common.nav.contact"></a>
-                <a href="legal-notice.html" data-i18n="common.footer.legalNotice"></a>
+                <a href="index.html" data-i18n="common.nav.home">Home</a>
+                <a href="services.html" data-i18n="common.nav.services">Services</a>
+                <a href="business-case.html" data-i18n="common.nav.businessCase">Business Case</a>
+                <a href="blog.html" data-i18n="common.nav.blog">Communications</a>
+                <a href="contact.html" data-i18n="common.nav.contact">Contact</a>
+                <a href="legal-notice.html" data-i18n="common.footer.legalNotice">Legal &amp; Privacy</a>
                 <a class="footer-social-link" href="https://www.linkedin.com/company/dpax/" target="_blank" rel="noopener noreferrer" aria-label="DPaX on LinkedIn" data-i18n-aria-label="common.social.linkedin">
                     <svg viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M4.98 3.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM3 9h4v12H3zm7 0h3.83v1.64h.05C14.41 9.7 15.95 8.7 18.17 8.7c4.58 0 5.43 3.01 5.43 6.92V21h-4v-4.76c0-1.14-.02-2.6-1.58-2.6-1.59 0-1.83 1.24-1.83 2.52V21h-4z" />

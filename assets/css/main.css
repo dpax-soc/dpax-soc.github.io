@@ -40,6 +40,10 @@ body {
     line-height: 1.55;
 }
 
+html.lang-initializing body {
+    visibility: hidden;
+}
+
 .visually-hidden {
     position: absolute !important;
     width: 1px;

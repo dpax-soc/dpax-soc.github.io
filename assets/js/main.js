@@ -3,6 +3,7 @@
     const SUPPORTED_LANGUAGES = ["en", "fr"];
     const STORAGE_KEY = "dpax-language";
     const URL_LANGUAGE_PARAM = "lang";
+    const LANGUAGE_INITIALIZING_CLASS = "lang-initializing";
     const TRANSLATIONS_PATH = "assets/i18n/translations.json";
     const LINKEDIN_POSTS_PATH = "assets/data/linkedin-posts.json";
     const LINKEDIN_POSTS_LIMIT = 20;
@@ -41,6 +42,10 @@
     const languageButtons = Array.from(document.querySelectorAll("[data-language-option]"));
     let dictionaries = null;
     let activeLanguage = DEFAULT_LANGUAGE;
+
+    const markLanguageReady = () => {
+        document.documentElement.classList.remove(LANGUAGE_INITIALIZING_CLASS);
+    };
 
     const normalizeLanguage = (value) => {
         if (!value) {
@@ -258,6 +263,8 @@
             applyLanguage(activeLanguage, { persist: false });
         } catch (error) {
             console.error("Unable to load translation file.", error);
+        } finally {
+            markLanguageReady();
         }
     };
 
@@ -524,6 +531,7 @@
             await initLocalization();
         } else {
             document.documentElement.lang = normalizeLanguage(resolveInitialLanguage());
+            markLanguageReady();
         }
 
         await initLinkedInFeed();
