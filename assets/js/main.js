@@ -3,7 +3,6 @@
     const SUPPORTED_LANGUAGES = ["en", "fr"];
     const STORAGE_KEY = "dpax-language";
     const URL_LANGUAGE_PARAM = "lang";
-    const LANGUAGE_INITIALIZING_CLASS = "lang-initializing";
     const TRANSLATIONS_PATH = "assets/i18n/translations.json";
     const LINKEDIN_POSTS_PATH = "assets/data/linkedin-posts.json";
     const LINKEDIN_POSTS_LIMIT = 20;
@@ -42,10 +41,6 @@
     const languageButtons = Array.from(document.querySelectorAll("[data-language-option]"));
     let dictionaries = null;
     let activeLanguage = DEFAULT_LANGUAGE;
-
-    const markLanguageReady = () => {
-        document.documentElement.classList.remove(LANGUAGE_INITIALIZING_CLASS);
-    };
 
     const normalizeLanguage = (value) => {
         if (!value) {
@@ -263,8 +258,6 @@
             applyLanguage(activeLanguage, { persist: false });
         } catch (error) {
             console.error("Unable to load translation file.", error);
-        } finally {
-            markLanguageReady();
         }
     };
 
@@ -505,38 +498,15 @@
         recalculate();
     };
 
-    const initReveal = () => {
-        const revealItems = document.querySelectorAll("[data-reveal]");
-        if (!revealItems.length) {
-            return;
-        }
-
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add("visible");
-                        observer.unobserve(entry.target);
-                    }
-                });
-            },
-            { threshold: 0.2, rootMargin: "0px 0px -50px 0px" }
-        );
-
-        revealItems.forEach((item) => observer.observe(item));
-    };
-
     const init = async () => {
         if (languageButtons.length) {
             await initLocalization();
         } else {
             document.documentElement.lang = normalizeLanguage(resolveInitialLanguage());
-            markLanguageReady();
         }
 
         await initLinkedInFeed();
         initRoiEstimator();
-        initReveal();
     };
 
     init();
