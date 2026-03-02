@@ -40,9 +40,10 @@
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"></noscript>
-    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="preload" as="style" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/main.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="assets/css/main.css"></noscript>
     <link rel="preload" as="image" href="assets/images/brand-logo-dpax-320.webp" type="image/webp">
-    <link rel="preload" as="image" href="assets/images/home-banner-network-security.webp" type="image/webp">
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -214,7 +215,7 @@
                             src="assets/images/home-banner-network-security.jpg"
                             alt="Network security landscape illustrating connected protection signals"
                             data-i18n-alt="home.banner.imageAlt"
-                            fetchpriority="high"
+                            loading="lazy"
                             decoding="async"
                         >
                     </picture>
