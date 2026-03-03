@@ -488,6 +488,52 @@ h1 {
     line-height: 1.45;
 }
 
+.call-script-highlight {
+    margin: 0.95rem 0 0;
+}
+
+.call-script-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.5rem 0.95rem;
+    border-radius: 999px;
+    border: 1px solid rgba(82, 210, 255, 0.52);
+    background: linear-gradient(120deg, rgba(82, 210, 255, 0.2), rgba(44, 166, 255, 0.16));
+    color: #edf8ff;
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    box-shadow: 0 8px 18px rgba(28, 126, 184, 0.28);
+    transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+}
+
+.call-script-link::before {
+    content: "30 min";
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.14rem 0.42rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #06203b;
+    background: rgba(137, 240, 255, 0.9);
+}
+
+.call-script-link:hover {
+    transform: translateY(-1px);
+    border-color: rgba(137, 240, 255, 0.74);
+    background: linear-gradient(120deg, rgba(82, 210, 255, 0.28), rgba(44, 166, 255, 0.24));
+    box-shadow: 0 10px 22px rgba(28, 126, 184, 0.34);
+}
+
+.call-script-link:focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+}
+
 .hero-content > .targets-disclaimer + .hero-actions {
     margin-top: 0.9rem;
 }
