@@ -645,15 +645,22 @@
             document.documentElement.lang = normalizeLanguage(resolveInitialLanguage());
         }
 
-        // Defer heavier DOM work to idle time to reduce first-load main-thread pressure.
-        const runDeferredUiWork = () => {
-            void initIcons();
-            void initLinkedInFeed();
+        // Defer heavier DOM work until after the load event to limit first-render reflow pressure.
+        const queueDeferredUiWork = () => {
+            const runDeferredUiWork = () => {
+                void initIcons();
+                void initLinkedInFeed();
+            };
+            if ("requestIdleCallback" in window) {
+                window.requestIdleCallback(runDeferredUiWork, { timeout: 2000 });
+            } else {
+                window.setTimeout(runDeferredUiWork, 80);
+            }
         };
-        if ("requestIdleCallback" in window) {
-            window.requestIdleCallback(runDeferredUiWork, { timeout: 1200 });
+        if (document.readyState === "complete") {
+            queueDeferredUiWork();
         } else {
-            window.setTimeout(runDeferredUiWork, 0);
+            window.addEventListener("load", queueDeferredUiWork, { once: true });
         }
 
         initRoiEstimator();
