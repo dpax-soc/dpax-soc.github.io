@@ -41,7 +41,14 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=optional" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=optional"></noscript>
     <link rel="stylesheet" href="assets/css/main.css">
-    <link rel="preload" as="image" href="assets/images/home-banner-network-security.webp" type="image/webp">
+    <link
+        rel="preload"
+        as="image"
+        href="assets/images/home-banner-network-security.webp"
+        imagesrcset="assets/images/home-banner-network-security-640.webp 640w, assets/images/home-banner-network-security.webp 1248w"
+        imagesizes="(max-width: 760px) calc(100vw - 1.4rem), (max-width: 1200px) calc(100vw - 2.5rem), 1140px"
+        type="image/webp"
+    >
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -207,9 +214,15 @@
             <div class="container">
                 <article class="feature-banner" data-reveal>
                     <picture>
-                        <source srcset="assets/images/home-banner-network-security.webp" type="image/webp">
+                        <source
+                            srcset="assets/images/home-banner-network-security-640.webp 640w, assets/images/home-banner-network-security.webp 1248w"
+                            sizes="(max-width: 760px) calc(100vw - 1.4rem), (max-width: 1200px) calc(100vw - 2.5rem), 1140px"
+                            type="image/webp"
+                        >
                         <img
                             src="assets/images/home-banner-network-security.jpg"
+                            srcset="assets/images/home-banner-network-security-640.jpg 640w, assets/images/home-banner-network-security.jpg 1248w"
+                            sizes="(max-width: 760px) calc(100vw - 1.4rem), (max-width: 1200px) calc(100vw - 2.5rem), 1140px"
                             alt="Network security landscape illustrating connected protection signals"
                             data-i18n-alt="home.banner.imageAlt"
                             width="1248"
