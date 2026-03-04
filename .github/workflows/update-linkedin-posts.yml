@@ -5,6 +5,10 @@ on:
   schedule:
     - cron: "0 0 */3 * *"
 
+concurrency:
+  group: update-linkedin-posts
+  cancel-in-progress: false
+
 permissions:
   contents: write
 
@@ -20,6 +24,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -49,6 +55,8 @@ jobs:
 
       - name: Commit and push if feed changed
         run: |
+          set -euo pipefail
+
           if git diff --quiet -- assets/data/linkedin-posts.json; then
             echo "No feed change detected"
             exit 0
@@ -58,4 +66,21 @@ jobs:
           git config user.email "support@dpax.fr"
           git add assets/data/linkedin-posts.json
           git commit -m "chore(data): refresh LinkedIn posts feed"
-          git push
+
+          BRANCH="${GITHUB_REF_NAME:-main}"
+          for attempt in 1 2 3; do
+            if git push origin "HEAD:${BRANCH}"; then
+              exit 0
+            fi
+
+            if [ "${attempt}" -eq 3 ]; then
+              break
+            fi
+
+            echo "Push failed on attempt ${attempt}; syncing with origin/${BRANCH} and retrying..."
+            git fetch origin "${BRANCH}"
+            git rebase "origin/${BRANCH}"
+          done
+
+          echo "::error::Unable to push after 3 attempts"
+          exit 1
