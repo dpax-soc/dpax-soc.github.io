@@ -5,8 +5,6 @@
     const URL_LANGUAGE_PARAM = "lang";
     const TRANSLATIONS_PATH = "assets/i18n/translations.json";
     const ICONS_PATH = "assets/images/svg-icons.json";
-    const LINKEDIN_POSTS_PATH = "assets/data/linkedin-posts.json";
-    const LINKEDIN_POSTS_LIMIT = 20;
 
     const nav = document.querySelector("[data-nav]");
     const toggle = document.querySelector("[data-nav-toggle]");
@@ -41,6 +39,7 @@
 
     const languageButtons = Array.from(document.querySelectorAll("[data-language-option]"));
     let dictionaries = null;
+    let dictionariesPromise = null;
     let activeLanguage = DEFAULT_LANGUAGE;
     let iconCatalog = null;
 
@@ -308,11 +307,6 @@
         return null;
     };
 
-    const getTranslationOrEmpty = (key) => {
-        const value = getTranslation(activeLanguage, key);
-        return typeof value === "string" ? value : "";
-    };
-
     const applyTextTranslations = (language) => {
         document.querySelectorAll("[data-i18n]").forEach((element) => {
             const key = element.dataset.i18n;
@@ -345,6 +339,37 @@
         });
     };
 
+    const loadDictionaries = async () => {
+        if (dictionaries) {
+            return dictionaries;
+        }
+
+        if (!dictionariesPromise) {
+            dictionariesPromise = fetch(TRANSLATIONS_PATH)
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(`Failed to load translations: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then((payload) => {
+                    dictionaries = payload;
+                    return dictionaries;
+                })
+                .catch((error) => {
+                    console.error("Unable to load translation file.", error);
+                    throw error;
+                })
+                .finally(() => {
+                    if (!dictionaries) {
+                        dictionariesPromise = null;
+                    }
+                });
+        }
+
+        return dictionariesPromise;
+    };
+
     const applyLanguage = (language, { persist = true, syncLinks = true, syncUrl = true } = {}) => {
         const nextLanguage = normalizeLanguage(language);
         activeLanguage = nextLanguage;
@@ -369,15 +394,27 @@
         }
     };
 
+    const requestLanguageSwitch = async (requestedLanguage) => {
+        const normalizedLanguage = normalizeLanguage(requestedLanguage);
+        if (normalizedLanguage === activeLanguage) {
+            return;
+        }
+
+        if (normalizedLanguage !== DEFAULT_LANGUAGE && !dictionaries) {
+            try {
+                await loadDictionaries();
+            } catch (error) {
+                return;
+            }
+        }
+
+        applyLanguage(normalizedLanguage);
+    };
+
     const bindLanguageSwitcher = () => {
         languageButtons.forEach((button) => {
             button.addEventListener("click", () => {
-                const requestedLanguage = button.dataset.languageOption;
-                const normalizedLanguage = normalizeLanguage(requestedLanguage);
-
-                if (normalizedLanguage !== activeLanguage) {
-                    applyLanguage(normalizedLanguage);
-                }
+                void requestLanguageSwitch(button.dataset.languageOption);
             });
         });
     };
@@ -388,254 +425,16 @@
         // Avoid mutating every internal link during first paint.
         applyLanguage(initialLanguage, { syncLinks: false });
 
-        try {
-            const response = await fetch(TRANSLATIONS_PATH);
-            if (!response.ok) {
-                throw new Error(`Failed to load translations: ${response.status}`);
-            }
+        if (initialLanguage === DEFAULT_LANGUAGE) {
+            return;
+        }
 
-            dictionaries = await response.json();
+        try {
+            await loadDictionaries();
             applyLanguage(activeLanguage, { persist: false, syncLinks: false, syncUrl: false });
         } catch (error) {
-            console.error("Unable to load translation file.", error);
+            // Logging is handled in loadDictionaries.
         }
-    };
-
-    const initLinkedInFeed = async () => {
-        const postsContainer = document.querySelector("[data-linkedin-posts]");
-        if (!postsContainer) {
-            return;
-        }
-
-        const statusElement = document.querySelector("[data-linkedin-status]");
-        const countElement = document.querySelector("[data-linkedin-post-count]");
-        const emptyLabelElement = document.querySelector("[data-linkedin-empty-label]");
-        const errorLabelElement = document.querySelector("[data-linkedin-error-label]");
-        const linkLabelElement = document.querySelector("[data-linkedin-link-label]");
-
-        const resolveText = (element, fallback) => {
-            if (!element || typeof element.textContent !== "string") {
-                return fallback;
-            }
-
-            const value = element.textContent.trim();
-            return value || fallback;
-        };
-
-        const emptyMessage = resolveText(emptyLabelElement, getTranslationOrEmpty("blog.feed.empty"));
-        const errorMessage = resolveText(errorLabelElement, getTranslationOrEmpty("blog.feed.error"));
-        const linkLabel = resolveText(linkLabelElement, getTranslationOrEmpty("blog.feed.linkCta"));
-        const postTitleFallback = getTranslationOrEmpty("blog.feed.postFallbackTitle");
-
-        const setStatus = (message, { hidden = false, isError = false } = {}) => {
-            if (!statusElement) {
-                return;
-            }
-
-            statusElement.textContent = message;
-            statusElement.classList.toggle("visually-hidden", hidden);
-            statusElement.classList.toggle("error", isError);
-        };
-
-        const setCount = (value) => {
-            if (countElement) {
-                countElement.textContent = String(value);
-            }
-        };
-
-        const isValidPost = (post) => {
-            if (!post || typeof post !== "object") {
-                return false;
-            }
-
-            if (post.isRepost === true) {
-                return false;
-            }
-
-            return typeof post.url === "string" && post.url.trim().length > 0;
-        };
-
-        const createPostCard = (post) => {
-            const card = document.createElement("article");
-            card.className = "linkedin-post-card";
-
-            const relativeDate = typeof post.relativeDate === "string" ? post.relativeDate.trim() : "";
-            if (relativeDate) {
-                const meta = document.createElement("p");
-                meta.className = "linkedin-post-meta";
-                meta.textContent = relativeDate;
-                card.append(meta);
-            }
-
-            const title = document.createElement("h3");
-            title.textContent = typeof post.title === "string" && post.title.trim()
-                ? post.title.trim()
-                : postTitleFallback;
-            card.append(title);
-
-            const excerpt = typeof post.excerpt === "string" ? post.excerpt.trim() : "";
-            if (excerpt) {
-                const excerptElement = document.createElement("p");
-                excerptElement.textContent = excerpt;
-                card.append(excerptElement);
-            }
-
-            const link = document.createElement("a");
-            link.className = "button button-ghost button-inline";
-            link.href = post.url;
-            link.target = "_blank";
-            link.rel = "noopener noreferrer";
-            link.textContent = linkLabel;
-            card.append(link);
-
-            return card;
-        };
-
-        try {
-            const response = await fetch(LINKEDIN_POSTS_PATH, { cache: "no-store" });
-            if (!response.ok) {
-                throw new Error(`LinkedIn feed load failed: ${response.status}`);
-            }
-
-            const payload = await response.json();
-            const allOriginalPosts = Array.isArray(payload.posts) ? payload.posts.filter(isValidPost) : [];
-            const originalPosts = allOriginalPosts.slice(0, LINKEDIN_POSTS_LIMIT);
-
-            postsContainer.innerHTML = "";
-            setCount(originalPosts.length);
-
-            if (!originalPosts.length) {
-                setStatus(emptyMessage);
-                return;
-            }
-
-            const fragment = document.createDocumentFragment();
-            originalPosts.forEach((post) => {
-                fragment.append(createPostCard(post));
-            });
-
-            postsContainer.append(fragment);
-            setStatus("", { hidden: true });
-        } catch (error) {
-            console.error("Unable to load LinkedIn posts.", error);
-            postsContainer.innerHTML = "";
-            setCount(0);
-
-            setStatus(errorMessage, { isError: true });
-        }
-    };
-
-    const initRoiEstimator = () => {
-        const estimator = document.querySelector("[data-roi-estimator]");
-        if (!estimator) {
-            return;
-        }
-
-        const hourlyRevenueInput = estimator.querySelector("[data-roi-input='hourlyRevenue']");
-        const useCaseSelect = estimator.querySelector("[data-roi-input='useCase']");
-        const incidentHoursInput = estimator.querySelector("[data-roi-input='incidentHours']");
-        const recoveryCostInput = estimator.querySelector("[data-roi-input='recoveryCost']");
-        const useCaseDetailsElement = estimator.querySelector("[data-roi-use-case-details]");
-
-        const totalCostOutput = document.querySelector("[data-roi-output='totalCost']");
-        const avoid30Output = document.querySelector("[data-roi-output='avoid30']");
-        const avoid50Output = document.querySelector("[data-roi-output='avoid50']");
-
-        if (
-            !hourlyRevenueInput
-            || !useCaseSelect
-            || !incidentHoursInput
-            || !recoveryCostInput
-            || !totalCostOutput
-            || !avoid30Output
-            || !avoid50Output
-        ) {
-            return;
-        }
-
-        const parsePositiveNumber = (value) => {
-            if (typeof value !== "string") {
-                return 0;
-            }
-
-            const normalized = value.replace(",", ".").trim();
-            const parsed = Number.parseFloat(normalized);
-            if (!Number.isFinite(parsed) || parsed < 0) {
-                return 0;
-            }
-
-            return parsed;
-        };
-
-        const formatCurrency = (value) => {
-            const locale = activeLanguage === "fr" ? "fr-FR" : "en-US";
-            return new Intl.NumberFormat(locale, {
-                style: "currency",
-                currency: "EUR",
-                maximumFractionDigits: 0
-            }).format(value);
-        };
-
-        const useCaseProfiles = {
-            ransomware: { incidentHours: 24, recoveryCost: 15000 },
-            phishing: { incidentHours: 6, recoveryCost: 4000 },
-            bec: { incidentHours: 12, recoveryCost: 10000 }
-        };
-
-        const getCurrentProfile = () => {
-            const selectedUseCase = useCaseSelect.value;
-            if (Object.prototype.hasOwnProperty.call(useCaseProfiles, selectedUseCase)) {
-                return useCaseProfiles[selectedUseCase];
-            }
-            return useCaseProfiles.ransomware;
-        };
-
-        const syncUseCaseFields = () => {
-            const { incidentHours, recoveryCost } = getCurrentProfile();
-            incidentHoursInput.value = String(incidentHours);
-            recoveryCostInput.value = String(recoveryCost);
-
-            if (useCaseDetailsElement) {
-                const downtimeLabel = getTranslationOrEmpty("home.estimator.useCase.detailsDowntime")
-                    || (activeLanguage === "fr" ? "Hypothèse d'interruption" : "Downtime assumption");
-                const recoveryLabel = getTranslationOrEmpty("home.estimator.useCase.detailsRecovery")
-                    || (activeLanguage === "fr" ? "Hypothèse de coût de reprise" : "Recovery cost assumption");
-                useCaseDetailsElement.textContent = `${downtimeLabel}: ${incidentHours} h | ${recoveryLabel}: ${formatCurrency(recoveryCost)}`;
-            }
-        };
-
-        const recalculate = () => {
-            const hourlyRevenue = parsePositiveNumber(hourlyRevenueInput.value);
-            const { incidentHours, recoveryCost } = getCurrentProfile();
-
-            const totalCost = (hourlyRevenue * incidentHours) + recoveryCost;
-            const avoid30 = totalCost * 0.3;
-            const avoid50 = totalCost * 0.5;
-
-            totalCostOutput.textContent = formatCurrency(totalCost);
-            avoid30Output.textContent = formatCurrency(avoid30);
-            avoid50Output.textContent = formatCurrency(avoid50);
-        };
-
-        hourlyRevenueInput.addEventListener("input", recalculate);
-        hourlyRevenueInput.addEventListener("blur", () => {
-            const nextValue = parsePositiveNumber(hourlyRevenueInput.value);
-            hourlyRevenueInput.value = String(Math.round(nextValue));
-            recalculate();
-        });
-
-        useCaseSelect.addEventListener("change", () => {
-            syncUseCaseFields();
-            recalculate();
-        });
-
-        window.addEventListener("dpax:language-changed", () => {
-            syncUseCaseFields();
-            recalculate();
-        });
-
-        syncUseCaseFields();
-        recalculate();
     };
 
     const init = async () => {
@@ -648,15 +447,12 @@
         // Defer heavier DOM work to idle time to reduce first-load main-thread pressure.
         const runDeferredUiWork = () => {
             void initIcons();
-            void initLinkedInFeed();
         };
         if ("requestIdleCallback" in window) {
             window.requestIdleCallback(runDeferredUiWork, { timeout: 1200 });
         } else {
             window.setTimeout(runDeferredUiWork, 0);
         }
-
-        initRoiEstimator();
     };
 
     init();
