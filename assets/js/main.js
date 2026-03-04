@@ -444,14 +444,23 @@
             document.documentElement.lang = normalizeLanguage(resolveInitialLanguage());
         }
 
-        // Defer heavier DOM work to idle time to reduce first-load main-thread pressure.
-        const runDeferredUiWork = () => {
-            void initIcons();
+        // Run icon injection after full page load to avoid early reflow pressure.
+        const queueDeferredUiWork = () => {
+            if ("requestIdleCallback" in window) {
+                window.requestIdleCallback(() => {
+                    void initIcons();
+                }, { timeout: 2500 });
+            } else {
+                window.setTimeout(() => {
+                    void initIcons();
+                }, 180);
+            }
         };
-        if ("requestIdleCallback" in window) {
-            window.requestIdleCallback(runDeferredUiWork, { timeout: 1200 });
+
+        if (document.readyState === "complete") {
+            queueDeferredUiWork();
         } else {
-            window.setTimeout(runDeferredUiWork, 0);
+            window.addEventListener("load", queueDeferredUiWork, { once: true });
         }
     };
 

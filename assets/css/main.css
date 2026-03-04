@@ -31,12 +31,9 @@ html {
 body {
     margin: 0;
     min-height: 100%;
-    font-family: "Space Grotesk", "Segoe UI", sans-serif;
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     color: var(--text);
-    background:
-        radial-gradient(1200px 700px at 90% -10%, rgba(82, 210, 255, 0.16), transparent 60%),
-        radial-gradient(900px 600px at 0% 10%, rgba(255, 140, 92, 0.12), transparent 60%),
-        linear-gradient(160deg, #050c17 0%, #081427 42%, #07101d 100%);
+    background: linear-gradient(160deg, #050c17 0%, #081427 48%, #07101d 100%);
     line-height: 1.55;
 }
 
@@ -69,7 +66,6 @@ img {
     width: 1.4rem;
     height: 1.4rem;
     display: block;
-    filter: drop-shadow(0 0 7px rgba(82, 210, 255, 0.28));
 }
 
 [data-icon] .site-icon[stroke]:not([stroke="none"]) {
@@ -135,7 +131,6 @@ h3.icon-heading [data-icon] .site-icon {
     position: sticky;
     top: 0;
     z-index: 20;
-    backdrop-filter: blur(10px);
     background: var(--chrome-bg);
     border-bottom: 1px solid rgba(162, 187, 219, 0.16);
 }
@@ -322,7 +317,7 @@ main {
     background: var(--surface);
     border: 1px solid var(--line);
     border-radius: var(--radius);
-    box-shadow: var(--shadow);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
 }
 
 .hero-content {
@@ -373,7 +368,7 @@ h1 {
     border-radius: var(--radius);
     overflow: hidden;
     border: 1px solid rgba(162, 187, 219, 0.24);
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.16);
 }
 
 .feature-banner img {
@@ -746,54 +741,6 @@ h1 {
 .footer-social-link:hover {
     border-color: rgba(241, 248, 255, 0.5);
     background-color: rgba(241, 248, 255, 0.08);
-}
-
-.site-carbon-badge {
-    flex: 0 0 100%;
-    margin-top: 0.35rem;
-    display: grid;
-    justify-items: center;
-    gap: 0.4rem;
-}
-
-.carbon-badge-link {
-    display: inline-flex;
-    align-items: center;
-    text-decoration: none;
-    border-radius: 0.36rem;
-    overflow: hidden;
-    border: 1px solid rgba(82, 210, 255, 0.4);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-}
-
-.carbon-badge-metric,
-.carbon-badge-brand {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 2rem;
-    padding: 0.3rem 0.56rem;
-    font-family: "Space Grotesk", "Inter", sans-serif;
-    font-size: 0.84rem;
-    line-height: 1.1;
-}
-
-.carbon-badge-metric {
-    background: #f5fbff;
-    color: #07101d;
-    border-right: 1px solid rgba(7, 16, 29, 0.18);
-}
-
-.carbon-badge-brand {
-    background: #2be7bc;
-    color: #07101d;
-    font-weight: 700;
-}
-
-.carbon-badge-rank {
-    font-size: 0.81rem;
-    color: #9ec7de;
-    text-align: center;
 }
 
 [data-reveal] {
