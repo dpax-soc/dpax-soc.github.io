@@ -5,6 +5,13 @@
     const URL_LANGUAGE_PARAM = "lang";
     const TRANSLATIONS_PATH = "assets/i18n/translations.json";
     const ICONS_PATH = "assets/images/svg-icons.json";
+    const TRANSLATABLE_ATTR_CONFIG = [
+        { selector: "[data-i18n-aria-label]", datasetKey: "i18nAriaLabel", attribute: "aria-label" },
+        { selector: "[data-i18n-title]", datasetKey: "i18nTitle", attribute: "title" },
+        { selector: "[data-i18n-content]", datasetKey: "i18nContent", attribute: "content" },
+        { selector: "[data-i18n-alt]", datasetKey: "i18nAlt", attribute: "alt" },
+        { selector: "[data-i18n-placeholder]", datasetKey: "i18nPlaceholder", attribute: "placeholder" }
+    ];
 
     const nav = document.querySelector("[data-nav]");
     const toggle = document.querySelector("[data-nav-toggle]");
@@ -38,10 +45,27 @@
     });
 
     const languageButtons = Array.from(document.querySelectorAll("[data-language-option]"));
+    const textTranslationTargets = Array.from(document.querySelectorAll("[data-i18n]"));
+    const attributeTranslationTargets = TRANSLATABLE_ATTR_CONFIG.flatMap(({ selector, datasetKey, attribute }) => Array
+        .from(document.querySelectorAll(selector))
+        .map((element) => ({
+            element,
+            key: element.dataset[datasetKey],
+            attribute
+        }))
+        .filter(({ key }) => typeof key === "string" && key.length > 0));
+    const internalHtmlLinkTargets = Array
+        .from(document.querySelectorAll("a[href]"))
+        .filter((anchor) => {
+            const href = anchor.getAttribute("href");
+            return !!href && /\.html(?:$|[?#])/i.test(href);
+        });
     let dictionaries = null;
     let dictionariesPromise = null;
     let activeLanguage = DEFAULT_LANGUAGE;
     let iconCatalog = null;
+    let queuedLanguageSwitchId = 0;
+    let languageMutationToken = 0;
 
     const normalizeIconKey = (value) => String(value || "")
         .toLowerCase()
@@ -252,6 +276,17 @@
         });
     };
 
+    const runAfterNextPaint = (callback) => {
+        if ("requestAnimationFrame" in window) {
+            window.requestAnimationFrame(() => {
+                window.requestAnimationFrame(callback);
+            });
+            return;
+        }
+
+        window.setTimeout(callback, 32);
+    };
+
     const toRelativeHref = (urlObject, originalHref) => {
         if (/^(?:[a-z]+:)?\/\//i.test(originalHref)) {
             return urlObject.toString();
@@ -262,9 +297,9 @@
     };
 
     const syncLanguageInInternalLinks = (language) => {
-        document.querySelectorAll("a[href]").forEach((anchor) => {
+        internalHtmlLinkTargets.forEach((anchor) => {
             const href = anchor.getAttribute("href");
-            if (!href || !/\.html(?:$|[?#])/i.test(href)) {
+            if (!href) {
                 return;
             }
 
@@ -308,7 +343,7 @@
     };
 
     const applyTextTranslations = (language) => {
-        document.querySelectorAll("[data-i18n]").forEach((element) => {
+        textTranslationTargets.forEach((element) => {
             const key = element.dataset.i18n;
             const value = getTranslation(language, key);
 
@@ -319,23 +354,12 @@
     };
 
     const applyAttributeTranslations = (language) => {
-        const attrConfig = [
-            { selector: "[data-i18n-aria-label]", datasetKey: "i18nAriaLabel", attribute: "aria-label" },
-            { selector: "[data-i18n-title]", datasetKey: "i18nTitle", attribute: "title" },
-            { selector: "[data-i18n-content]", datasetKey: "i18nContent", attribute: "content" },
-            { selector: "[data-i18n-alt]", datasetKey: "i18nAlt", attribute: "alt" },
-            { selector: "[data-i18n-placeholder]", datasetKey: "i18nPlaceholder", attribute: "placeholder" }
-        ];
+        attributeTranslationTargets.forEach(({ element, key, attribute }) => {
+            const value = getTranslation(language, key);
 
-        attrConfig.forEach(({ selector, datasetKey, attribute }) => {
-            document.querySelectorAll(selector).forEach((element) => {
-                const key = element.dataset[datasetKey];
-                const value = getTranslation(language, key);
-
-                if (typeof value === "string") {
-                    element.setAttribute(attribute, value);
-                }
-            });
+            if (typeof value === "string") {
+                element.setAttribute(attribute, value);
+            }
         });
     };
 
@@ -374,12 +398,6 @@
         const nextLanguage = normalizeLanguage(language);
         activeLanguage = nextLanguage;
         document.documentElement.lang = nextLanguage;
-        if (syncUrl) {
-            syncLanguageInCurrentUrl(nextLanguage);
-        }
-        if (syncLinks) {
-            syncLanguageInInternalLinks(nextLanguage);
-        }
         updateLanguageButtons(nextLanguage);
 
         if (dictionaries) {
@@ -387,28 +405,56 @@
             applyAttributeTranslations(nextLanguage);
         }
 
-        window.dispatchEvent(new CustomEvent("dpax:language-changed", { detail: { language: nextLanguage } }));
+        const mutationToken = ++languageMutationToken;
+        window.setTimeout(() => {
+            if (mutationToken !== languageMutationToken) {
+                return;
+            }
 
-        if (persist) {
-            storeLanguage(nextLanguage);
-        }
+            if (syncUrl) {
+                syncLanguageInCurrentUrl(nextLanguage);
+            }
+            if (syncLinks) {
+                syncLanguageInInternalLinks(nextLanguage);
+            }
+
+            window.dispatchEvent(new CustomEvent("dpax:language-changed", { detail: { language: nextLanguage } }));
+
+            if (persist) {
+                storeLanguage(nextLanguage);
+            }
+        }, 0);
     };
 
     const requestLanguageSwitch = async (requestedLanguage) => {
         const normalizedLanguage = normalizeLanguage(requestedLanguage);
+        const switchRequestId = ++queuedLanguageSwitchId;
+
         if (normalizedLanguage === activeLanguage) {
+            updateLanguageButtons(activeLanguage);
             return;
         }
+
+        updateLanguageButtons(normalizedLanguage);
 
         if (normalizedLanguage !== DEFAULT_LANGUAGE && !dictionaries) {
             try {
                 await loadDictionaries();
             } catch (error) {
+                if (switchRequestId === queuedLanguageSwitchId) {
+                    updateLanguageButtons(activeLanguage);
+                }
                 return;
             }
         }
 
-        applyLanguage(normalizedLanguage);
+        runAfterNextPaint(() => {
+            if (switchRequestId !== queuedLanguageSwitchId) {
+                return;
+            }
+
+            applyLanguage(normalizedLanguage);
+        });
     };
 
     const bindLanguageSwitcher = () => {
@@ -425,7 +471,22 @@
         // Avoid mutating every internal link during first paint.
         applyLanguage(initialLanguage, { syncLinks: false });
 
+        const prewarmDictionaries = () => {
+            if (dictionaries || dictionariesPromise) {
+                return;
+            }
+
+            void loadDictionaries().catch(() => {
+                // Logging is handled in loadDictionaries.
+            });
+        };
+
         if (initialLanguage === DEFAULT_LANGUAGE) {
+            if ("requestIdleCallback" in window) {
+                window.requestIdleCallback(prewarmDictionaries, { timeout: 3000 });
+            } else {
+                window.setTimeout(prewarmDictionaries, 1200);
+            }
             return;
         }
 
