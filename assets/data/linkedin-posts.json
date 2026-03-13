@@ -1,6 +1,6 @@
 {
   "source": "https://www.linkedin.com/company/dpax/",
-  "lastSyncedAt": "2026-03-10T05:00:08.027Z",
+  "lastSyncedAt": "2026-03-13T05:04:19.502Z",
   "posts": [
     {
       "id": "7436680884059176960",
@@ -8,7 +8,7 @@
       "url": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7436680884059176960",
       "title": "🚨 1,2 million de lignes de code analysées…",
       "excerpt": "🚨 1,2 million de lignes de code analysées… 10 561 failles critiques détectées. Pour une PME, le moindre logiciel non mis à jour peut devenir un vecteur d’attaque redoutable. 🛡️Les pirates n’attaquent plus vos pare-feux. Ils exploitent les logiciels du quo...",
-      "relativeDate": "21h"
+      "relativeDate": "3d"
     },
     {
       "id": "7435263392409354241",
@@ -16,7 +16,7 @@
       "url": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7435263392409354241",
       "title": "Vos serveurs sont une forteresse. Votre poche, une porte ouverte. 🚪📱",
       "excerpt": "Vos serveurs sont une forteresse. Votre poche, une porte ouverte. 🚪📱 La plupart des PME investissent des milliers d'euros dans des pare-feu et la sécurité de leurs bureaux, mais laissent l'outil le plus puissant – le smartphone du PDG – totalement exposé....",
-      "relativeDate": "4d"
+      "relativeDate": "7d"
     },
     {
       "id": "7434186554014793728",
@@ -24,7 +24,7 @@
       "url": "https://www.linkedin.com/feed/update/urn:li:share:7434186554014793728",
       "title": "Objet: Multiples vulnérabilités dans le noyau Linux d'Ubuntu",
       "excerpt": "Votre infrastructure Ubuntu est-elle réellement protégée contre les dernières menaces ? Le CERT-FR vient de publier une alerte critique concernant de multiples vulnérabilités affectant le noyau Linux, mettant en péril la confidentialité et l'intégrité de vo...",
-      "relativeDate": "7d"
+      "relativeDate": "10d"
     },
     {
       "id": "7433055517406572544",
@@ -32,7 +32,7 @@
       "url": "https://www.linkedin.com/feed/update/urn:li:share:7433055517406572544",
       "title": "Objet: Multiples vulnérabilités dans les produits VMware",
       "excerpt": "Une vague massive de vulnérabilités vient de frapper l'écosystème VMware, menaçant directement la stabilité et la sécurité de vos infrastructures. Si votre organisation utilise ces solutions, une prise de conscience immédiate et des actions correctives sont...",
-      "relativeDate": "10d"
+      "relativeDate": "13d"
     },
     {
       "id": "7432778999719899136",
@@ -40,7 +40,7 @@
       "url": "https://www.linkedin.com/feed/update/urn:li:share:7432778999719899136",
       "title": "Secure personal data",
       "excerpt": "Votre entreprise est-elle réellement prête à faire face à une fuite de données majeures ? Une simple négligence peut coûter bien plus cher qu'une amende RGPD, elle peut détruire la confiance de vos clients et paralyser durablement votre activité. Voici les...",
-      "relativeDate": "11d"
+      "relativeDate": "14d"
     },
     {
       "id": "7432340761180008448",
@@ -48,7 +48,7 @@
       "url": "https://www.linkedin.com/feed/update/urn:li:share:7432340761180008448",
       "title": "CISA Confirms Active Exploitation of FileZen CVE-2026-25108 Vulnerability",
       "excerpt": "Une vulnérabilité critique activement exploitée met en péril les systèmes de transfert de fichiers. Votre organisation est-elle à l'abri d'une injection de commandes OS via FileZen ? La CISA vient d'ajouter la vulnérabilité CVE-2026-25108 à son catalogue de...",
-      "relativeDate": "12d"
+      "relativeDate": "15d"
     },
     {
       "id": "7431734610826391553",
@@ -56,7 +56,7 @@
       "url": "https://www.linkedin.com/feed/update/urn:li:share:7431734610826391553",
       "title": "⚡ Weekly Recap: Double-Tap Skimmers, PromptSpy AI, 30Tbps DDoS, Docker Malware & More",
       "excerpt": "Le paysage actuel de la cybersécurité exige des stratégies proactives face aux menaces émergentes, de l'exploitation avancée de l'IA au défi quantique imminent. Se tenir informé des analyses d'experts est primordial pour une défense robuste. Nous organisons...",
-      "relativeDate": "14d"
+      "relativeDate": "17d"
     },
     {
       "id": "7431690248960602113",
@@ -64,7 +64,7 @@
       "url": "https://www.linkedin.com/feed/update/urn:li:share:7431690248960602113",
       "title": "Lancement officiel de DPaX :",
       "excerpt": "Lancement officiel de DPaX : La cybersécurité de pointe au service des PME. Le paysage des menaces numériques évolue plus vite que jamais. Pour les petites et moyennes entreprises, la question n'est plus de savoir si elles seront visées, mais quand. C’est p...",
-      "relativeDate": "14d"
+      "relativeDate": "17d"
     }
   ]
 }
