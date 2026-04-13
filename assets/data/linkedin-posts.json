@@ -1,6 +1,6 @@
 {
   "source": "https://www.linkedin.com/company/dpax/",
-  "lastSyncedAt": "2026-04-10T01:13:42.006Z",
+  "lastSyncedAt": "2026-04-13T01:19:36.234Z",
   "posts": [
     {
       "id": "7447580177259421697",
@@ -8,7 +8,7 @@
       "url": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7447580177259421697",
       "title": "🚨 Critical Security Update: Patch GLPI Immediately 🚨",
       "excerpt": "🚨 Critical Security Update: Patch GLPI Immediately 🚨 The CERT-FR has released advisory CERTFR-2026-AVI-0401 regarding multiple high-severity vulnerabilities affecting GLPI. If you are using this ITSM platform, your infrastructure could be at risk. The Ris...",
-      "relativeDate": "1d"
+      "relativeDate": "4d"
     },
     {
       "id": "7436687830472572928",
@@ -16,7 +16,7 @@
       "url": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7436687830472572928",
       "title": "💥 Le chef du gang de ransomware Phobos plaide coupable.",
       "excerpt": "💥 Le chef du gang de ransomware Phobos plaide coupable. Mais pour des milliers de PME, le mal est déjà fait : millions d'euros envolés. Leur méthode ? Rien de magique. 🔹 Phishing subtil 🔹 Accès à distance mal protégé 🚨 Les signaux d’alerte étaient là… s...",
-      "relativeDate": "10d"
+      "relativeDate": "13d"
     },
     {
       "id": "7435272390940667904",
@@ -24,7 +24,7 @@
       "url": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7435272390940667904",
       "title": "Les dirigeants de PME pensent souvent que seuls les grands groupes sont visés par les attaques informatiques complexes. C'est faux.",
       "excerpt": "Les dirigeants de PME pensent souvent que seuls les grands groupes sont visés par les attaques informatiques complexes. C'est faux. Aujourd'hui, un simple vecteur d’attaque caché dans une fausse page web \\(une forme évoluée de phishing\\) suffit à compromett...",
-      "relativeDate": "17d"
+      "relativeDate": "20d"
     }
   ]
 }
