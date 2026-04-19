@@ -1,6 +1,6 @@
 {
   "source": "https://www.linkedin.com/company/dpax/",
-  "lastSyncedAt": "2026-04-16T01:20:35.204Z",
+  "lastSyncedAt": "2026-04-19T01:20:40.045Z",
   "posts": [
     {
       "id": "7449793037766914049",
@@ -8,7 +8,7 @@
       "url": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7449793037766914049",
       "title": "🚨 Alerte de sécurité critique pour les PME utilisant des solutions IBM !",
       "excerpt": "🚨 Alerte de sécurité critique pour les PME utilisant des solutions IBM ! Le CERT-FR vient de publier un avis concernant de multiples vulnérabilités affectant des produits piliers comme QRadar, WebSphere et Sterling. Pourquoi est-ce une priorité pour votre...",
-      "relativeDate": "18h"
+      "relativeDate": "3d"
     },
     {
       "id": "7447580177259421697",
@@ -16,7 +16,7 @@
       "url": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7447580177259421697",
       "title": "🚨 Critical Security Update: Patch GLPI Immediately 🚨",
       "excerpt": "🚨 Critical Security Update: Patch GLPI Immediately 🚨 The CERT-FR has released advisory CERTFR-2026-AVI-0401 regarding multiple high-severity vulnerabilities affecting GLPI. If you are using this ITSM platform, your infrastructure could be at risk. The Ris...",
-      "relativeDate": "7d"
+      "relativeDate": "10d"
     },
     {
       "id": "7436687830472572928",
@@ -24,7 +24,7 @@
       "url": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7436687830472572928",
       "title": "💥 Le chef du gang de ransomware Phobos plaide coupable.",
       "excerpt": "💥 Le chef du gang de ransomware Phobos plaide coupable. Mais pour des milliers de PME, le mal est déjà fait : millions d'euros envolés. Leur méthode ? Rien de magique. 🔹 Phishing subtil 🔹 Accès à distance mal protégé 🚨 Les signaux d’alerte étaient là… s...",
-      "relativeDate": "16d"
+      "relativeDate": "19d"
     }
   ]
 }
