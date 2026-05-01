@@ -1,14 +1,22 @@
 {
   "source": "https://www.linkedin.com/company/dpax/",
-  "lastSyncedAt": "2026-04-28T01:30:46.007Z",
+  "lastSyncedAt": "2026-05-01T01:48:26.902Z",
   "posts": [
+    {
+      "id": "7454458052453347328",
+      "isRepost": false,
+      "url": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7454458052453347328",
+      "title": "22 secondes. ⏱️",
+      "excerpt": "22 secondes. ⏱️ C’est le temps qu’il faut désormais à une IA malveillante pour exploiter une faille après s'être introduite dans votre système. En trois ans, ce délai est passé de 8 heures à quelques secondes. Pour une PME, le constat est sans appel : l’hum...",
+      "relativeDate": "2d"
+    },
     {
       "id": "7449793037766914049",
       "isRepost": false,
       "url": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7449793037766914049",
       "title": "🚨 Alerte de sécurité critique pour les PME utilisant des solutions IBM !",
       "excerpt": "🚨 Alerte de sécurité critique pour les PME utilisant des solutions IBM ! Le CERT-FR vient de publier un avis concernant de multiples vulnérabilités affectant des produits piliers comme QRadar, WebSphere et Sterling. Pourquoi est-ce une priorité pour votre...",
-      "relativeDate": "12d"
+      "relativeDate": "15d"
     },
     {
       "id": "7447580177259421697",
@@ -16,15 +24,7 @@
       "url": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7447580177259421697",
       "title": "🚨 Critical Security Update: Patch GLPI Immediately 🚨",
       "excerpt": "🚨 Critical Security Update: Patch GLPI Immediately 🚨 The CERT-FR has released advisory CERTFR-2026-AVI-0401 regarding multiple high-severity vulnerabilities affecting GLPI. If you are using this ITSM platform, your infrastructure could be at risk. The Ris...",
-      "relativeDate": "19d"
-    },
-    {
-      "id": "7436687830472572928",
-      "isRepost": false,
-      "url": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7436687830472572928",
-      "title": "💥 Le chef du gang de ransomware Phobos plaide coupable.",
-      "excerpt": "💥 Le chef du gang de ransomware Phobos plaide coupable. Mais pour des milliers de PME, le mal est déjà fait : millions d'euros envolés. Leur méthode ? Rien de magique. 🔹 Phishing subtil 🔹 Accès à distance mal protégé 🚨 Les signaux d’alerte étaient là… s...",
-      "relativeDate": "28d"
+      "relativeDate": "22d"
     }
   ]
 }
