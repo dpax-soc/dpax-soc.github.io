@@ -1,6 +1,6 @@
 {
   "source": "https://www.linkedin.com/company/dpax/",
-  "lastSyncedAt": "2026-05-07T01:44:52.698Z",
+  "lastSyncedAt": "2026-05-10T01:44:57.470Z",
   "posts": [
     {
       "id": "7454458052453347328",
@@ -8,7 +8,7 @@
       "url": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7454458052453347328",
       "title": "22 secondes. ⏱️",
       "excerpt": "22 secondes. ⏱️ C’est le temps qu’il faut désormais à une IA malveillante pour exploiter une faille après s'être introduite dans votre système. En trois ans, ce délai est passé de 8 heures à quelques secondes. Pour une PME, le constat est sans appel : l’hum...",
-      "relativeDate": "8d"
+      "relativeDate": "11d"
     },
     {
       "id": "7449793037766914049",
@@ -16,7 +16,7 @@
       "url": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7449793037766914049",
       "title": "🚨 Alerte de sécurité critique pour les PME utilisant des solutions IBM !",
       "excerpt": "🚨 Alerte de sécurité critique pour les PME utilisant des solutions IBM ! Le CERT-FR vient de publier un avis concernant de multiples vulnérabilités affectant des produits piliers comme QRadar, WebSphere et Sterling. Pourquoi est-ce une priorité pour votre...",
-      "relativeDate": "21d"
+      "relativeDate": "24d"
     },
     {
       "id": "7447580177259421697",
@@ -24,7 +24,7 @@
       "url": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7447580177259421697",
       "title": "🚨 Critical Security Update: Patch GLPI Immediately 🚨",
       "excerpt": "🚨 Critical Security Update: Patch GLPI Immediately 🚨 The CERT-FR has released advisory CERTFR-2026-AVI-0401 regarding multiple high-severity vulnerabilities affecting GLPI. If you are using this ITSM platform, your infrastructure could be at risk. The Ris...",
-      "relativeDate": "28d"
+      "relativeDate": "1mo"
     }
   ]
 }
