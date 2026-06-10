@@ -1,6 +1,6 @@
 {
   "source": "https://www.linkedin.com/company/dpax/",
-  "lastSyncedAt": "2026-06-07T02:10:04.216Z",
+  "lastSyncedAt": "2026-06-10T02:03:00.945Z",
   "posts": [
     {
       "id": "7454458052453347328",
@@ -24,7 +24,7 @@
       "url": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7447580177259421697",
       "title": "🚨 Critical Security Update: Patch GLPI Immediately 🚨",
       "excerpt": "🚨 Critical Security Update: Patch GLPI Immediately 🚨 The CERT-FR has released advisory CERTFR-2026-AVI-0401 regarding multiple high-severity vulnerabilities affecting GLPI. If you are using this ITSM platform, your infrastructure could be at risk. The Ris...",
-      "relativeDate": "1mo"
+      "relativeDate": "2mo"
     }
   ]
 }
